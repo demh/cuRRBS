@@ -58,8 +58,8 @@ Parameters:
                        create a directory called 'pre_computed_files' inside the 
                        working directory where the pre-computed files will be stored.
                       
-                       e.g. if the working directory is '~/Desktop/run_cuRRBS/' the 
-                            files will be stored in '~/Desktop/run_cuRRBS/pre_computed_files/' 
+                       e.g. if the working directory is '~/Desktop/work_dir/' the 
+                            files will be stored in '~/Desktop/work_dir/pre_computed_files/' 
     
 ----------------------------- 
 """

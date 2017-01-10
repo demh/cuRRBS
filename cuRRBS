@@ -1,0 +1,309 @@
+#!/bin/bash
+
+###############################################################################
+#### Wrapper script for cuRRBS ####
+#### Include description ###
+
+#INPUT
+# -s: absolute path to the main cuRRBS software folder (e.g. ~/Desktop/cuRRBS)
+# -o: absolute path to main output folder (e.g. ~/Desktop/my_cuRRBS_run) 
+# -p: absolute path to the folder that contains the pre-computed files (e.g. ~/Desktop/my_cuRRBS_run/pre_computed_files).
+# -e: absolute path to the text file which contains the enzymes to check in the pipeline (e.g. enzymes_to_check.txt)
+# -a: absolute path to the CSV file which contains the annotation for the sites of interest (e.g. human_clock_sites_annotation.csv)
+
+VERSION=0.1
+
+
+############################### FUNCTIONS #####################################
+
+###### AUXILIARY FUNCTIONS ######
+
+# print_help()
+# Prints a help guide
+
+print_help() {
+
+	echo
+	echo
+	echo "This is the help page"
+	echo
+	echo
+
+}
+
+
+############################### HANDLING ARGUMENTS ############################
+
+
+###### If no arguments are provided: print help ######
+
+if [ "$#" -eq 0 ]; then
+    print_help
+    exit 0
+fi
+
+
+###### Parse input ######
+
+## Default values 
+
+SOFTDIR="" # Path to the main folder with the software
+OUTDIR="" # Path to the output directory
+PCDIR=""  # Path to the folder which contains the pre-computed files
+ENZ_FILE=""  # Path to the enzymes_to_check.txt file
+SA_FILE="" # Path to the sites annotation file
+
+## Parsing 
+
+while getopts ":s:o:p:e:a:hv?" OPT; do
+	case $OPT in
+		s)
+		  SOFTDIR=$OPTARG
+		  ;;
+		o)
+     		  OUTDIR=$OPTARG
+		  ;;
+		p)
+		  PCDIR=$OPTARG
+                  ;;
+		e)
+		  ENZ_FILE=$OPTARG
+		  ;;
+                a)
+                  SA_FILE=$OPTARG
+                  ;;
+		h)
+     		  print_help
+      		  exit 0
+      		  ;;
+    		v)
+      		  echo "Software version: $VERSION"
+      		  exit 0
+      		  ;;
+    		\?)
+      		  print_help
+      		  echo "Invalid option: -$OPTARG" >&2
+		  echo
+      		  exit 1
+      		  ;;
+  	esac
+done
+
+
+###### Checks ######
+
+## Software directory
+
+if [ -z "$SOFTDIR" ]
+then
+   print_help
+   echo
+   echo "ERROR: The path to the software folder (-s) is required." >&2
+   echo
+   exit 1
+
+else
+   
+   if [ ! -d "$SOFTDIR" ]
+   then
+   	echo
+        echo "ERROR: The software path $SOFTDIR can not be found. Please provide a valid software path and rerun the software." >&2
+   	echo
+        exit 1 
+   fi
+fi
+
+
+## Output directory
+
+if [ -z "$OUTDIR" ]
+then
+   print_help
+   echo
+   echo "ERROR: The path to the output folder (-o) is required." >&2
+   echo
+   exit 1
+else
+   if [ -d "$OUTDIR" ]
+   then
+      echo
+      echo "WARNING: The output path $OUTDIR already exists. New folders will be created inside this directory." >&2
+   fi
+fi
+
+
+## Directory with the pre-computed files
+
+if [ ! -d "$PCDIR" ]
+then
+   echo
+   echo "ERROR: The path to the pre-computed files $PCDIR does not exist. Please select a new directory and rerun the software." >&2
+   echo
+   exit 1
+fi
+
+
+# Enzymes_to_check.txt file
+
+if [ -z "$ENZ_FILE" ]
+then
+   print_help
+   echo
+   echo "ERROR: The path to the file with the enzymes to check (-e) is required." >&2
+   echo
+   exit 1
+else
+   
+   if [ ! -f "$ENZ_FILE" ]
+   then
+      echo
+      echo "ERROR: the file $ENZ_FILE does not exist. Please provide a valid file with the enzymes to check and rerun the software." >&2
+      echo
+      exit 1
+   fi
+   while read line; do
+      LINEFIX=$(echo $line |tr -d '\n')
+      PC_FILE=$PCDIR/${LINEFIX}_pre_computed.txt
+      if [ ! -f "$PC_FILE" ]
+      then
+         echo "ERROR: The pre-computed file for the enzyme $line could not be found." >&2
+         echo
+         exit 1
+      fi
+   done < $ENZ_FILE
+fi
+
+
+# Sites annotation file
+
+if [ -z "$SA_FILE" ]
+then
+   print_help
+   echo
+   echo "ERROR: The path to the sites annotation file (-a) is required." >&2
+   echo
+   exit 1
+else
+   if [ ! -f "$SA_FILE" ]
+   then
+      echo
+      echo "ERROR: the file $SA_FILE does not exist. Please provide a valid file with the sites annotation and rerun the software." >&2
+      echo
+      exit 1
+   fi
+fi
+
+############################## INITIAL MESSAGING ##############################
+
+echo
+echo "cuRRBS Initial messaging"
+echo
+
+
+############################### DEPENDENCIES CHECK ############################
+
+echo
+printf "Checking the dependencies ...  "
+
+###### PYTHON LIBRARIES ######
+
+PYTHON_D=( os sys pyfaidx Bio csv numpy collections pandas __future__ )
+
+for lib in "${PYTHON_D[@]}"
+do
+	python -c "import $lib" 2>/dev/null
+	
+	if [ $? -eq 1 ]
+	then
+	echo "ERROR: The Python library $lib is not installed. Please install it so the software can run." >&2
+	echo
+	exit 1
+	fi 	
+
+done 
+
+
+###### R PACKAGES ######
+
+R_P=( optparse dplyr )
+
+for pack in "${R_P[@]}"
+do
+
+	CHECK_R_P=$( ( Rscript --no-save --no-restore -e "library($pack, logical.return=T)" | \
+		    sed s/\\[1\\]//) 1>&1 2>/dev/null)	
+
+	if [ $CHECK_R_P == "FALSE" ]
+	then
+	echo "ERROR: The R package $pack is not installed. Please install it so the software can run." >&2
+	echo
+	exit 1
+	fi
+
+done
+
+
+
+printf "OK"
+echo
+
+############################### RUNNING PIPELINE ##############################
+
+###### 1. Creating main folders for the working directory ######
+
+printf "Creating folders in output directory ...  "
+
+FOLDER_NAMES=( df_files fol2 fol3 )
+
+for folder in "${FOLDER_NAMES[@]}"
+do
+
+   if [[ -d "$OUTDIR/$folder" && -n "$(ls -A $OUTDIR/$folder)" ]]
+   then
+     echo
+     echo "ERROR: The folder $OUTDIR/$folder already exists and contains some files. Please delete it or select a new output directory and rerun the software." >&2
+     echo
+     exit 1
+   else
+     mkdir -p $OUTDIR/$folder 2>/dev/null
+   fi
+done
+
+if [ ! -d "$OUTDIR" ]
+then
+   echo "ERROR: The output path can not be created. Please select a new output directory and rerun the software." >&2
+   echo
+   exit 1
+fi
+
+printf "OK\n"
+
+
+
+###### 2. Create the files which contain the information with the fragment length distributions and the
+#         location of the fragments that contain the sites of interest for all the individual enzymes. 
+
+SCRIPT2=$SOFTDIR/src/obtain_distributions_and_fragments.py
+
+## Check that the necessary script is in place
+
+if [ ! -f "$SCRIPT2" ]
+then
+   echo "ERROR: The obtain_distributions_and_fragments.py script could not be found. Please make sure that the \
+$SOFTDIR folder contains the source code (/src) and rerun the software." >&2
+   echo
+   exit 1
+fi
+
+
+## Run the script
+
+echo
+echo "Creating intermediate files for all the individual enzymes to check ..."
+
+python $SCRIPT2 $ENZ_FILE $SA_FILE $PCDIR $OUTDIR/df_files
+
+
+############################ END OF THE SCRIPT ################################
+
+  
