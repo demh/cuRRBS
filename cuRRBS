@@ -3,13 +3,40 @@
 ###############################################################################
 #### Wrapper script for cuRRBS ####
 #### Include description ###
+#### Acknowledge Adrian for ideas in code ####
 
-#INPUT
-# -s: absolute path to the main cuRRBS software folder (e.g. ~/Desktop/cuRRBS)
+
+# INPUT
+#
+# Compulsory arguments
+#
 # -o: absolute path to main output folder (e.g. ~/Desktop/my_cuRRBS_run) 
 # -p: absolute path to the folder that contains the pre-computed files (e.g. ~/Desktop/my_cuRRBS_run/pre_computed_files).
 # -e: absolute path to the text file which contains the enzymes to check in the pipeline (e.g. enzymes_to_check.txt)
 # -a: absolute path to the CSV file which contains the annotation for the sites of interest (e.g. human_clock_sites_annotation.csv)
+# -r: read length (in bp) during Illumina sequencing for the planned RRBS experiment (e.g. 100). This determines whether a CpG is 'seen' in 
+#     a size-selected fragment after the sequencing (i.e. only if it is close to one of the ends of the fragment).
+# -c: value for the C_Score constant. It must be a number (integer or float) in the interval (0,1]. Only those enzyme combinations with 
+#     a Score > C_Score * max_Score are reported. See the documentation for more details.
+#
+# Optional arguments
+#
+# -k: value for the C_NF/1000 constant. It must be a number (integer or float) in the interval (0,+Inf). Only those enzyme combinations with
+#     a NF/1000 <= C_NF/1000 * ref_NF/1000 are reported. See documentation for more details. Default: 1
+# -h: value for the constant used in heuristic mode. See documentation for more details. Default: 2
+# 
+# Options
+#
+# -n: change the size range mode from deterministic (it returns always the same optimal size range for a given set of window
+#     parameters) to non-deterministic (it uses a Differential Evolution stochastic algorithm to optimize the size range).
+#     In many cases it will be faster than the deterministic mode at the expense of accuracy.
+# -x: change the search mode from heuristic (only the 2-enzyme combinations in which one of the individual enzymes had an
+#     individual Score >= (C_score * max_score) / h are computed) to exhaustive (all 2-enzyme combinations are checked). This
+#     increases the chances of finding a better restriction enzyme combination, but at the expense of a huge increase in the 
+#     computational time. Use at your own risk !!
+# -h: print the help page and exit.
+# -v: print the software version and exit. 
+
 
 VERSION=0.1
 
@@ -31,6 +58,20 @@ print_help() {
 
 }
 
+# check_script()
+# Check that the necessary script is in place. If it is not found, exit.
+
+check_script() {
+
+   if [ ! -f "$1" ]
+   then
+   echo "ERROR: The $1 script could not be found. Please make sure that the \
+$SOFTDIR/src folder contains all the source code and rerun the software." >&2
+   echo
+   exit 1
+   fi
+}
+
 
 ############################### HANDLING ARGUMENTS ############################
 
@@ -47,19 +88,26 @@ fi
 
 ## Default values 
 
-SOFTDIR="" # Path to the main folder with the software
 OUTDIR="" # Path to the output directory
 PCDIR=""  # Path to the folder which contains the pre-computed files
 ENZ_FILE=""  # Path to the enzymes_to_check.txt file
 SA_FILE="" # Path to the sites annotation file
+RL="" # Read length
+C_SCORE="" # C_score constant
+
+C_NF="1" # C_NF/1000 constant
+H="2" # heuristic (h) constant
+
+SR_MODE="d" # Size range mode (deterministic: 'd', non-deterministic: 'nd')
+SEARCH="h"  # Search mode (heuristc: 'h', exhaustive: 'e')
+
+SOFTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" # Path to the main folder with the software
+
 
 ## Parsing 
 
-while getopts ":s:o:p:e:a:hv?" OPT; do
+while getopts ":o:p:e:a:r:c:k:h:nxhv?" OPT; do
 	case $OPT in
-		s)
-		  SOFTDIR=$OPTARG
-		  ;;
 		o)
      		  OUTDIR=$OPTARG
 		  ;;
@@ -71,6 +119,24 @@ while getopts ":s:o:p:e:a:hv?" OPT; do
 		  ;;
                 a)
                   SA_FILE=$OPTARG
+                  ;;
+		r)
+	          RL=$OPTARG
+		  ;;
+                c)
+                  C_SCORE=$OPTARG
+                  ;;
+                k)
+                  C_NF=$OPTARG
+                  ;;
+                h)
+                  H=$OPTARG
+                  ;;
+ 		n)
+		  SR_MODE='nd'
+		  ;;
+                x)
+                  SEARCH='e'
                   ;;
 		h)
      		  print_help
@@ -92,28 +158,6 @@ done
 
 ###### Checks ######
 
-## Software directory
-
-if [ -z "$SOFTDIR" ]
-then
-   print_help
-   echo
-   echo "ERROR: The path to the software folder (-s) is required." >&2
-   echo
-   exit 1
-
-else
-   
-   if [ ! -d "$SOFTDIR" ]
-   then
-   	echo
-        echo "ERROR: The software path $SOFTDIR can not be found. Please provide a valid software path and rerun the software." >&2
-   	echo
-        exit 1 
-   fi
-fi
-
-
 ## Output directory
 
 if [ -z "$OUTDIR" ]
@@ -127,19 +171,29 @@ else
    if [ -d "$OUTDIR" ]
    then
       echo
-      echo "WARNING: The output path $OUTDIR already exists. New folders will be created inside this directory." >&2
+      echo "WARNING: The output path $OUTDIR already exists." >&2
    fi
 fi
 
 
 ## Directory with the pre-computed files
 
-if [ ! -d "$PCDIR" ]
+if [ -z "$PCDIR" ]
 then
+   print_help
    echo
-   echo "ERROR: The path to the pre-computed files $PCDIR does not exist. Please select a new directory and rerun the software." >&2
+   echo "ERROR: The path to the pre-computed files (-p) is required." >&2
    echo
    exit 1
+
+else
+   if [ ! -d "$PCDIR" ]
+   then
+      echo
+      echo "ERROR: The path to the pre-computed files $PCDIR does not exist. Please select a new directory and rerun the software." >&2
+      echo
+      exit 1
+   fi
 fi
 
 
@@ -192,6 +246,108 @@ else
       exit 1
    fi
 fi
+
+
+# Read length
+
+int='^[0-9]+$'
+
+if [ -z "$RL" ]
+then
+   print_help
+   echo
+   echo "ERROR: The read length (-r) must be provided." >&2
+   echo
+   exit 1
+else
+   if ! [[ $RL =~ $int ]] || [ $RL -lt 35 ] || [ $RL -gt 300 ]
+   then
+      echo
+      echo "ERROR: The read length must be an integer between 35 and 300. Please change this parameter and rerun the software." >&2
+      echo
+      exit 1
+   fi
+fi
+      
+
+# C_Score constant
+
+float='^[-+]?[0-9]*\.?[0-9]+$'
+
+if [ -z "$C_SCORE" ]
+then
+   print_help
+   echo
+   echo "ERROR: The C_Score constant (-c) must be provided." >&2
+   echo
+   exit 1
+else
+   if ! [[ $C_SCORE =~ $int ]] && ! [[ $C_SCORE =~ $float ]]
+   then
+      echo
+      echo "ERROR: The C_Score must be a number (integer or float). Please change this parameter and rerun the software." >&2
+      echo
+      exit 1
+   else
+      if [ $(echo "$C_SCORE <= 0" |bc -l) -eq 1 ] || [ $(echo "$C_SCORE > 1" |bc -l) -eq 1 ]
+      then
+         echo
+         echo "ERROR: The C_Score must be in the interval (0,1]. Please change this parameter and rerun the software." >&2
+         echo
+         exit 1
+      fi
+   fi
+fi
+
+# C_NF/1000 constant
+
+if ! [[ $C_NF =~ $int ]] && ! [[ $C_NF =~ $float ]]
+then
+   echo
+   echo "ERROR: The C_NF/1000 must be a number (integer or float). Please change this parameter and rerun the software." >&2
+   echo
+   exit 1
+else
+   if [ $(echo "$C_NF <= 0" |bc -l) -eq 1 ]
+   then
+      echo
+      echo "ERROR: The C_NF/1000 must be in the interval (0,+Inf). Please change this parameter and rerun the software." >&2
+      echo
+      exit 1
+   fi
+fi
+
+
+# H constant
+
+if ! [[ $H =~ $int ]] && ! [[ $H =~ $float ]]
+then
+   echo
+   echo "ERROR: The heuristic constant (h) must be a number (integer or float). Please change this parameter and rerun the software." >&2
+   echo
+   exit 1
+else
+   if [ $(echo "$H < 1" |bc -l) -eq 1 ]
+   then
+      echo
+      echo "ERROR: The heuristic constant (h) must be in the interval [1,+Inf). Please change this parameter and rerun the software." >&2
+      echo
+      exit 1
+   fi
+fi
+
+
+# Software directory
+
+if [ ! -d "$SOFTDIR" ]
+then
+   echo
+   echo "ERROR: The software path $SOFTDIR can not be found. Please provide a valid software path and rerun the software." >&2
+   echo
+   exit 1
+fi
+
+
 
 ############################## INITIAL MESSAGING ##############################
 
@@ -249,21 +405,25 @@ echo
 
 ############################### RUNNING PIPELINE ##############################
 
-###### 1. Creating main folders for the working directory ######
+
+###### 0.1 Creating main folders for the working directory ######
 
 printf "Creating folders in output directory ...  "
 
-FOLDER_NAMES=( df_files fol2 fol3 )
+FOLDER_NAMES=( df_files SNE_files extra_files )
 
 for folder in "${FOLDER_NAMES[@]}"
 do
 
    if [[ -d "$OUTDIR/$folder" && -n "$(ls -A $OUTDIR/$folder)" ]]
    then
-     echo
-     echo "ERROR: The folder $OUTDIR/$folder already exists and contains some files. Please delete it or select a new output directory and rerun the software." >&2
-     echo
-     exit 1
+     if [ ! -s "$OUTDIR/logs/CHECKPOINT" ]
+     then
+        echo
+        echo "ERROR: The folder $OUTDIR/$folder already exists and contains some files. Please delete it or select a new output directory and rerun the software." >&2
+        echo
+        exit 1
+     fi
    else
      mkdir -p $OUTDIR/$folder 2>/dev/null
    fi
@@ -280,30 +440,232 @@ printf "OK\n"
 
 
 
-###### 2. Create the files which contain the information with the fragment length distributions and the
-#         location of the fragments that contain the sites of interest for all the individual enzymes. 
+###### 0.2. Implementation of a CHECKPOINT file ######
 
-SCRIPT2=$SOFTDIR/src/obtain_distributions_and_fragments.py
+# Create logs folder when necessary
 
-## Check that the necessary script is in place
-
-if [ ! -f "$SCRIPT2" ]
+if [ ! -d "$OUTDIR/logs" ]
 then
-   echo "ERROR: The obtain_distributions_and_fragments.py script could not be found. Please make sure that the \
-$SOFTDIR folder contains the source code (/src) and rerun the software." >&2
+   mkdir $OUTDIR/logs/
+fi
+
+# Check is there is a non-empty CHEKPOINT file and fix the STEP variable accordingly
+
+if [ -s "$OUTDIR/logs/CHECKPOINT" ]
+then
+
+   STEP=$(tail -1 $OUTDIR/logs/CHECKPOINT | cut -f1 -d" ")
    echo
-   exit 1
+   echo "CHECKPOINT file found. Running cuRRBS pipeline after STEP $STEP."
+
+else
+
+   STEP=0
+   echo
+   echo "We could not find a previous CHECKPOINT file. The entire cuRRBS pipeline will be run."
+
 fi
 
 
-## Run the script
+
+###### 1. Create the files which contain the information with the fragment length distributions and the
+#         location of the fragments that contain the sites of interest for all the individual enzymes. 
+
+if [ "$STEP" -lt 1 ]
+then
+
+   ## Define the script and check
+
+   SCRIPT1=$SOFTDIR/src/obtain_distributions_and_fragments.py
+   check_script $SCRIPT1
+
+
+   ## Run the script
+
+   echo
+   echo "STEP 1: Creating intermediate files for all the individual enzymes to check ..."
+
+   python $SCRIPT1 $ENZ_FILE $SA_FILE $PCDIR $OUTDIR/df_files
+   
+   
+   ## Update CHEKPOINT file
+
+   echo "1 df_files_1_enzyme" >> $OUTDIR/logs/CHECKPOINT
+   STEP=1
+
+fi
+
+
+###### 2. Calculate the Score, NF/1000 and EV values for the individual enzymes and report the values for
+#      the best size range (i.e. the one that minimizes the EV value for a given enzyme).
+
+if [ "$STEP" -lt 2 ]
+then
+
+   ## Select the appropiate script, depending on the size range mode.
+
+   if [ $SR_MODE = 'd' ]
+   then
+      SCRIPT2=$SOFTDIR/src/calculate_SNE_deterministic.R
+   fi
+
+   if [ $SR_MODE = 'nd' ]
+   then
+      SCRIPT2=$SOFTDIR/src/calculate_SNE_nondeterministic.R
+   fi
+
+   check_script $SCRIPT2
+
+
+   ## Run the script.
+
+   echo
+   echo "STEP 2: Finding the optimal size range for all the individual enzymes ..."
+
+   # For the exhaustive mode
+
+   if [ $SEARCH = "e" ]
+   then
+   
+      Rscript $SCRIPT2 -f $OUTDIR/df_files/fl_distributions_1_enzymes.txt \
+          -c $OUTDIR/df_files/fragments_of_interest_1_enzymes.txt	\
+          -l $SA_FILE \
+          -p $OUTDIR/SNE_files/ \
+          -r $RL \
+          -t $C_NF \
+          -x $C_SCORE \
+          -a 20 \
+          -b 800 \
+          -s 10 \
+          -w 10 \
+          -d '1_enz_exh'
+   fi
+
+   # For the heuristic mode
+
+   if [ $SEARCH = "h" ]
+   then
+
+     C_SCORE_H=$(echo "$C_SCORE / $H" | bc -l)
+     Rscript $SCRIPT2 -f $OUTDIR/df_files/fl_distributions_1_enzymes.txt \
+          -c $OUTDIR/df_files/fragments_of_interest_1_enzymes.txt       \
+          -l $SA_FILE \
+          -p $OUTDIR/SNE_files/ \
+          -r $RL \
+          -t $C_NF \
+          -x $C_SCORE_H \
+          -a 20 \
+          -b 800 \
+          -s 20 \
+          -w 20 \
+          -d '1_enz_heu'
+   fi
+
+
+   # Quit the software if no individual enzymes satisfied the thresholds. 
+
+   if ! [[ -n "$(ls $OUTDIR/SNE_files/)" ]]
+   then
+
+      # Update CHECKPOINT file and quit
+
+      rm $OUTDIR/logs/CHECKPOINT
+      echo "1 df_files_1_enzyme" >> $OUTDIR/logs/CHECKPOINT      
+
+      echo
+      echo "There were no individual enzymes that satisfied the imposed Score and NF/thresholds."
+      echo "Please rerun the software with a lower C_Score value (or a higher C_NF/1000 value)." 
+      echo
+      exit 1
+   fi
+
+   # Update CHECKPOINT file
+
+   echo "2 sne_file_1_enzyme" >> $OUTDIR/logs/CHECKPOINT
+   STEP=2
+
+fi
+
+
+
+###### 3. Create a list with the 2-enzyme combinations that will be checked ######
+
+if [ "$STEP" -lt 3 ]
+then 
+
+   ## Select the script  
+
+   SCRIPT3=$SOFTDIR/src/create_enzyme_combinations.R
+   check_script $SCRIPT3
+
+   ## Run the script
+   
+   echo
+   echo "STEP 3: Creating a list with the 2-enzyme combinations that will be checked ..."
+
+   Rscript $SCRIPT3 -e $ENZ_FILE -s $OUTDIR/SNE_files/SNE_*.csv_1_enz_* -m $SEARCH -p $OUTDIR/extra_files 
+
+   ## If there is only one enzyme: JUMP to appropiate site (i.e. change STEP). TO IMPLEMENT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  
+   if [ ! -f "$OUTDIR/extra_files/combinations_to_check.txt" ]
+   then
+      
+      echo "        There are no 2-enzyme combinations to check. Jumping directly to STEP 6."
+      echo
+      STEP=5
+
+   else
+      STEP=3
+   fi
+
+   ## Update CHECKPOINT file
+
+   echo "3 combs_to_check" >> $OUTDIR/logs/CHECKPOINT
+
+
+fi
+
+
+
+###### 4. Create the files which contain the information with the fragment length distributions and the
+#         location of the fragments that contain the sites of interest for the 2-enzyme combinations. 
+
+if [ "$STEP" -lt 4 ]
+then
+
+   ## Define the script and check
+
+   SCRIPT4=$SOFTDIR/src/obtain_distributions_and_fragments.py
+   check_script $SCRIPT4
+
+
+   ## Run the script
+
+   echo
+   echo "STEP 4: Creating intermediate files for the 2-enzyme combinations to check ..."
+
+   python $SCRIPT4 $OUTDIR/extra_files/combinations_to_check.txt $SA_FILE $PCDIR $OUTDIR/df_files
+
+
+   ## Update CHEKPOINT file
+
+   echo "4 df_files_2_enzymes" >> $OUTDIR/logs/CHECKPOINT
+   STEP=4
+
+fi
+
+
+
+
+
+
+
+##############
 
 echo
-echo "Creating intermediate files for all the individual enzymes to check ..."
+echo 'cuRRBS finished OK.'
+echo
 
-python $SCRIPT2 $ENZ_FILE $SA_FILE $PCDIR $OUTDIR/df_files
 
+############################ END OF THE SCRIPT ###############################
 
-############################ END OF THE SCRIPT ################################
-
-  

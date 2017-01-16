@@ -488,7 +488,7 @@ EV_calculation <- function(var_vector){
 
 ### 1. Calculate the number of enzymes / enzyme combinations in the input files.
 
-print('Calculating the number of enzyme(s) (combinations) available ...');
+#print('Calculating the number of enzyme(s) (combinations) available ...');
 
 fld_headers <- system(paste0("grep -n '>' ", fld_file_path), intern=T);
 fragments_headers <- system(paste0("grep -n '>' ", fragments_file_path), intern=T);
@@ -501,7 +501,7 @@ if(length(fld_headers) != length(fragments_headers)){
 
 ncombs <- length(fld_headers);
 
-print(paste0('There are ', ncombs, ' enzyme(s) (combinations) available in the input files.'));
+#print(paste0('There are ', ncombs, ' enzyme(s) (combinations) available in the input files.'));
 
 
 ## Other useful variables.
@@ -540,7 +540,7 @@ open(fragments_file);
 
 for(i in 1:length(fld_chunk_sep)){
   
-  print(paste0('Non-deterministic optimisation of enzyme(s) (combinations) ', i, '/', length(fld_chunk_sep),' ...'));
+  cat(paste0('        Non-deterministic optimisation of enzyme(s) (combinations) ', i, '/', length(fld_chunk_sep),' ...'), sep='\n');
   
   # Read the fld and the fragment chunks.
   
@@ -679,7 +679,7 @@ close(fld_file);
 close(fragments_file);
 
 
-print('The script finished correctly.');
+#print('The script finished correctly.');
 
 
 #########################################################

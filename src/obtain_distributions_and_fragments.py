@@ -252,7 +252,7 @@ print_count = 1
 
 for element in all_enzymes:
 
-    print('Processing enzyme (or enzyme combination) ' + str(print_count) + '/'+ 
+    print('        Processing enzyme (or enzyme combination) ' + str(print_count) + '/'+ 
     str(len(all_enzymes)) + ' ...')        
     
     chosen_enzymes =  element.split(',')
