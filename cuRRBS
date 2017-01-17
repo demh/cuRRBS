@@ -593,21 +593,30 @@ then
      fi      
    fi
 
-   # Quit the software if no individual enzymes satisfied the thresholds. 
+   # If no individual enzymes satisfied the thresholds. 
 
    if ! [[ -n "$(ls $OUTDIR/SNE_files/)" ]]
    then
 
-      # Update CHECKPOINT file and quit
+      if [ $SEARCH = "h" ]
+      then
+      
+         # Update CHECKPOINT file and quit
 
-      rm $OUTDIR/logs/CHECKPOINT
-      echo "1 df_files_1_enzyme" >> $OUTDIR/logs/CHECKPOINT      
+         rm $OUTDIR/logs/CHECKPOINT
+         echo "1 df_files_1_enzyme" >> $OUTDIR/logs/CHECKPOINT      
 
-      echo
-      echo "There were no individual enzymes that satisfied the imposed Score and NF/thresholds."
-      echo "Please rerun the software with a lower C_Score value (or a higher C_NF/1000 value)." 
-      echo
-      exit 1
+         echo
+         echo "There were no individual enzymes that satisfied the imposed Score and NF/thresholds."
+         echo "Please rerun the software with a lower C_Score value (or a higher C_NF/1000 value)." 
+         echo
+         exit 1
+      fi
+
+      if [ $SEARCH = "e" ]
+      then
+         echo "        There are no individual enzymes that satisfied the imposed Score and NF/thresholds."
+      fi
    fi
 
    # Update CHECKPOINT file
@@ -752,9 +761,9 @@ then
    fi
 
 
-   if ! [[ -n "$(ls $OUTDIR/SNE_files/SNE_deterministic.csv_2_enz_*)" ]]
+   if ! [ -s $OUTDIR/SNE_files/SNE_*.csv_2_enz_* ]
    then
-      echo "There are no 2-enzyme combinations that satisfied the imposed Score and NF/thresholds."
+      echo "        There are no 2-enzyme combinations that satisfied the imposed Score and NF/thresholds."
    fi
 
    # Update CHECKPOINT file
