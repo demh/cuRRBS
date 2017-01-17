@@ -559,8 +559,39 @@ then
           -s 20 \
           -w 20 \
           -d '1_enz_heu'
-   fi
 
+     # For those enzymes that pass the heuristic threshold:
+
+     if [ -n "$(ls $OUTDIR/SNE_files/)" ]
+     then
+       
+       echo
+       echo '        (Only in heuristic search mode): finding optimal size ranges using the final thresholds ...'
+       
+       cat $OUTDIR/SNE_files/SNE_deterministic.csv_1_enz_heu | cut -f1 -d',' > $OUTDIR/extra_files/enzymes_pass_heur.txt    
+      
+       SCRIPTEX=$SOFTDIR/src/extract_from_df_files.R
+       check_script $SCRIPTEX
+
+       Rscript $SCRIPTEX -f $OUTDIR/df_files/fl_distributions_1_enzymes.txt \
+          -c $OUTDIR/df_files/fragments_of_interest_1_enzymes.txt \
+          -e $OUTDIR/extra_files/enzymes_pass_heur.txt \
+          -d 'heu_final'
+
+       Rscript $SCRIPT2 -f $OUTDIR/df_files/fl_distributions_1_enzymes.txt_heu_final \
+          -c $OUTDIR/df_files/fragments_of_interest_1_enzymes.txt_heu_final       \
+          -l $SA_FILE \
+          -p $OUTDIR/SNE_files/ \
+          -r $RL \
+          -t $C_NF \
+          -x $C_SCORE \
+          -a 20 \
+          -b 800 \
+          -s 20 \
+          -w 20 \
+          -d 'final_1_enz_heu'
+     fi      
+   fi
 
    # Quit the software if no individual enzymes satisfied the thresholds. 
 
@@ -605,8 +636,8 @@ then
 
    Rscript $SCRIPT3 -e $ENZ_FILE -s $OUTDIR/SNE_files/SNE_*.csv_1_enz_* -m $SEARCH -p $OUTDIR/extra_files 
 
-   ## If there is only one enzyme: JUMP to appropiate site (i.e. change STEP). TO IMPLEMENT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  
+   ## Avoid the 2-enzyme steps if there are not 2-enzyme combinations.
+
    if [ ! -f "$OUTDIR/extra_files/combinations_to_check.txt" ]
    then
       
@@ -656,6 +687,82 @@ fi
 
 
 
+###### 5. Calculate the Score, NF/1000 and EV values for the 2-enzyme combinations and report the values for
+#      the best size range (i.e. the one that minimizes the EV value for a given enzyme).
+
+if [ "$STEP" -lt 5 ]
+then
+
+   ## Select the appropiate script, depending on the size range mode.
+
+   if [ $SR_MODE = 'd' ]
+   then
+      SCRIPT5=$SOFTDIR/src/calculate_SNE_deterministic.R
+   fi
+
+   if [ $SR_MODE = 'nd' ]
+   then
+      SCRIPT5=$SOFTDIR/src/calculate_SNE_nondeterministic.R
+   fi
+
+   check_script $SCRIPT5
+
+
+   ## Run the script.
+
+   echo
+   echo "STEP 5: Finding the optimal size range for the 2-enzyme combinations ..."
+
+   # For the exhaustive mode
+
+   if [ $SEARCH = "e" ]
+   then
+
+      Rscript $SCRIPT5 -f $OUTDIR/df_files/fl_distributions_2_enzymes.txt \
+          -c $OUTDIR/df_files/fragments_of_interest_2_enzymes.txt       \
+          -l $SA_FILE \
+          -p $OUTDIR/SNE_files/ \
+          -r $RL \
+          -t $C_NF \
+          -x $C_SCORE \
+          -a 20 \
+          -b 800 \
+          -s 10 \
+          -w 10 \
+          -d '2_enz_exh'
+   fi
+
+   # For the heuristic mode
+
+   if [ $SEARCH = "h" ]
+   then
+
+     Rscript $SCRIPT2 -f $OUTDIR/df_files/fl_distributions_2_enzymes.txt \
+          -c $OUTDIR/df_files/fragments_of_interest_2_enzymes.txt       \
+          -l $SA_FILE \
+          -p $OUTDIR/SNE_files/ \
+          -r $RL \
+          -t $C_NF \
+          -x $C_SCORE \
+          -a 20 \
+          -b 800 \
+          -s 20 \
+          -w 20 \
+          -d '2_enz_heu'
+   fi
+
+
+   if ! [[ -n "$(ls $OUTDIR/SNE_files/SNE_deterministic.csv_2_enz_*)" ]]
+   then
+      echo "There are no 2-enzyme combinations that satisfied the imposed Score and NF/thresholds."
+   fi
+
+   # Update CHECKPOINT file
+
+   echo "5 sne_file_2_enzymes" >> $OUTDIR/logs/CHECKPOINT
+   STEP=5
+
+fi
 
 
 

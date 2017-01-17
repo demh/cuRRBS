@@ -92,7 +92,7 @@ if(is.null(opt$iso_file) | is.null(opt$output_path)){
 }
 
 
-## Parameters.
+## Input arguments.
 
 annotation_path <- as.character(opt$iso_file);
 

@@ -68,7 +68,7 @@ if(is.null(opt$enzymes_to_check) | is.null(opt$sne_files) |
 }
 
 
-## Input ##
+## Input arguments.
 
 enz_to_check_path <- as.character(opt$enzymes_to_check);
 SNE_file_path <- as.character(opt$sne_files); # Only needed for heuristic mode
@@ -99,12 +99,19 @@ if(sum(all_enzymes == "")>0){ # Remove empty lines
 
 if(search_mode == 'e'){
   
-  enz_comb <- combn(all_enzymes, 2, function(x){
+  if(length(all_enzymes) > 1){
     
-    return(paste0(x[1], ',', x[2]));
+    enz_comb <- combn(all_enzymes, 2, function(x){
+      
+      return(paste0(x[1], ',', x[2]));
+      
+    });
     
-  });
-  
+  }else{
+    
+    enz_comb <- c();
+    
+  }
 }
 
 

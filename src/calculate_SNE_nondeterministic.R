@@ -139,7 +139,7 @@ if(is.null(opt$fld_file) | is.null(opt$fragments_file) |
 }
 
 
-## Parameters.
+## Input arguments.
 
 
 # Output path / working directory.
