@@ -23,7 +23,9 @@
 #
 # -k: value for the C_NF/1000 constant. It must be a number (integer or float) in the interval (0,+Inf). Only those enzyme combinations with
 #     a NF/1000 <= C_NF/1000 * ref_NF/1000 are reported. See documentation for more details. Default: 1
-# -h: value for the constant used in heuristic mode. See documentation for more details. Default: 2
+# -u: value for the constant used in heuristic mode. See documentation for more details. Default: 2
+# -d: experimental error assumed when performing the size range selection (in base pairs). When this value is increased, less size ranges
+#     are tested and the software is faster, but it is also more likely to miss a better size range than the one reported. DEFAULT: 20 
 # 
 # Options
 #
@@ -32,8 +34,8 @@
 #     In many cases it will be faster than the deterministic mode at the expense of accuracy.
 # -x: change the search mode from heuristic (only the 2-enzyme combinations in which one of the individual enzymes had an
 #     individual Score >= (C_score * max_score) / h are computed) to exhaustive (all 2-enzyme combinations are checked). This
-#     increases the chances of finding a better restriction enzyme combination, but at the expense of a huge increase in the 
-#     computational time. Use at your own risk !!
+#     increases the chances of finding a better restriction enzyme combination, but at the expense of a big increase in 
+#     computational time and memory. Use at your own risk !!
 # -h: print the help page and exit.
 # -v: print the software version and exit. 
 
@@ -97,6 +99,7 @@ C_SCORE="" # C_score constant
 
 C_NF="1" # C_NF/1000 constant
 H="2" # heuristic (h) constant
+ERROR="20" # experimental error
 
 SR_MODE="d" # Size range mode (deterministic: 'd', non-deterministic: 'nd')
 SEARCH="h"  # Search mode (heuristc: 'h', exhaustive: 'e')
@@ -106,7 +109,7 @@ SOFTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" # Path to the main f
 
 ## Parsing 
 
-while getopts ":o:p:e:a:r:c:k:h:nxhv?" OPT; do
+while getopts ":o:p:e:a:r:c:k:u:d:nxhv?" OPT; do
 	case $OPT in
 		o)
      		  OUTDIR=$OPTARG
@@ -129,8 +132,11 @@ while getopts ":o:p:e:a:r:c:k:h:nxhv?" OPT; do
                 k)
                   C_NF=$OPTARG
                   ;;
-                h)
+                u)
                   H=$OPTARG
+                  ;;
+                d)
+                  ERROR=$OPTARG
                   ;;
  		n)
 		  SR_MODE='nd'
@@ -337,6 +343,16 @@ else
 fi
 
 
+# Experimental error
+
+if ! [[ $ERROR =~ $int ]] || [ $ERROR -lt 1 ] || [ $ERROR -gt 500 ]
+then
+   echo
+   echo "ERROR: The experimental error (-d) must be an integer between 1 and 500. Please change this parameter and rerun the software." >&2
+   echo
+   exit 1
+fi
+
 # Software directory
 
 if [ ! -d "$SOFTDIR" ]
@@ -536,8 +552,8 @@ then
           -x $C_SCORE \
           -a 20 \
           -b 800 \
-          -s 10 \
-          -w 10 \
+          -s $ERROR \
+          -w $ERROR \
           -d '1_enz_exh'
    fi
 
@@ -556,8 +572,8 @@ then
           -x $C_SCORE_H \
           -a 20 \
           -b 800 \
-          -s 20 \
-          -w 20 \
+          -s $ERROR \
+          -w $ERROR \
           -d '1_enz_heu'
 
      # For those enzymes that pass the heuristic threshold:
@@ -587,8 +603,8 @@ then
           -x $C_SCORE \
           -a 20 \
           -b 800 \
-          -s 20 \
-          -w 20 \
+          -s $ERROR \
+          -w $ERROR \
           -d 'final_1_enz_heu'
      fi      
    fi
@@ -736,8 +752,8 @@ then
           -x $C_SCORE \
           -a 20 \
           -b 800 \
-          -s 10 \
-          -w 10 \
+          -s $ERROR \
+          -w $ERROR \
           -d '2_enz_exh'
    fi
 
@@ -755,8 +771,8 @@ then
           -x $C_SCORE \
           -a 20 \
           -b 800 \
-          -s 20 \
-          -w 20 \
+          -s $ERROR \
+          -w $ERROR \
           -d '2_enz_heu'
    fi
 
