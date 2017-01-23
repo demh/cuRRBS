@@ -16,6 +16,8 @@
 # -a: absolute path to the CSV file which contains the annotation for the sites of interest (e.g. human_clock_sites_annotation.csv)
 # -r: read length (in bp) during Illumina sequencing for the planned RRBS experiment (e.g. 100). This determines whether a CpG is 'seen' in 
 #     a size-selected fragment after the sequencing (i.e. only if it is close to one of the ends of the fragment).
+# -s: Total size (in bp) of the adapters used for the RRBS experiment. This will be used to calculate the experimental size range. e.g. in
+#     the original RRBS protocol (Gu et al., Nature Methods, 2011) this value is 120 for single-end adapters. 
 # -c: value for the C_Score constant. It must be a number (integer or float) in the interval (0,1]. Only those enzyme combinations with 
 #     a Score > C_Score * max_Score are reported. See the documentation for more details.
 #
@@ -26,9 +28,13 @@
 # -u: value for the constant used in heuristic mode. See documentation for more details. Default: 2
 # -d: experimental error assumed when performing the size range selection (in base pairs). When this value is increased, less size ranges
 #     are tested and the software is faster, but it is also more likely to miss a better size range than the one reported. DEFAULT: 20 
+# -t: maximum number of individual enzymes or enzyme combinations that will be reported in the final output file. DEFAULT: 30
+# -m: absolute path to the annotation file containing the information regarding the different isoschizomer families and methylation sensitivity of
+#     the different enzymes. DEFAULT: utils/isoschizomers_CpG_annotation.csv 
 # 
 # Options
 #
+# -i: include the number of sites of interest that will theoretically be sequenced and their respective IDs in the final output file.
 # -n: change the size range mode from deterministic (it returns always the same optimal size range for a given set of window
 #     parameters) to non-deterministic (it uses a Differential Evolution stochastic algorithm to optimize the size range).
 #     In many cases it will be faster than the deterministic mode at the expense of accuracy.
@@ -95,21 +101,26 @@ PCDIR=""  # Path to the folder which contains the pre-computed files
 ENZ_FILE=""  # Path to the enzymes_to_check.txt file
 SA_FILE="" # Path to the sites annotation file
 RL="" # Read length
+ADAPT="" # Total size of the adapters
 C_SCORE="" # C_score constant
 
 C_NF="1" # C_NF/1000 constant
 H="2" # heuristic (h) constant
 ERROR="20" # experimental error
+TOP="30" # Max number top enzymes
 
+INCLUDE="N" # Include information regarding sites of interest?
 SR_MODE="d" # Size range mode (deterministic: 'd', non-deterministic: 'nd')
 SEARCH="h"  # Search mode (heuristc: 'h', exhaustive: 'e')
 
 SOFTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" # Path to the main folder with the software
 
+MET="$SOFTDIR/utils/isoschizomers_CpG_annotation.csv" # Absolute path to the file with isoschizomer and methylation sensitivity information
+
 
 ## Parsing 
 
-while getopts ":o:p:e:a:r:c:k:u:d:nxhv?" OPT; do
+while getopts ":o:p:e:a:r:s:c:k:u:d:t:m:inxhv?" OPT; do
 	case $OPT in
 		o)
      		  OUTDIR=$OPTARG
@@ -126,6 +137,9 @@ while getopts ":o:p:e:a:r:c:k:u:d:nxhv?" OPT; do
 		r)
 	          RL=$OPTARG
 		  ;;
+                s)
+                  ADAPT=$OPTARG
+                  ;;
                 c)
                   C_SCORE=$OPTARG
                   ;;
@@ -137,6 +151,15 @@ while getopts ":o:p:e:a:r:c:k:u:d:nxhv?" OPT; do
                   ;;
                 d)
                   ERROR=$OPTARG
+                  ;;
+                t)
+                  TOP=$OPTARG
+                  ;;
+                m)
+                  MET=$OPTARG
+                  ;;
+                i)
+                  INCLUDE='Y'
                   ;;
  		n)
 		  SR_MODE='nd'
@@ -274,6 +297,26 @@ else
       exit 1
    fi
 fi
+
+
+# Adapter total size
+
+if [ -z "$ADAPT" ]
+then
+   print_help
+   echo
+   echo "ERROR: The adapters size (-s) must be provided." >&2
+   echo
+   exit 1
+else
+   if ! [[ $ADAPT =~ $int ]] || [ $ADAPT -lt 1 ]
+   then
+      echo
+      echo "ERROR: The adapters size must be an integer greater than 0. Please change this parameter and rerun the software." >&2
+      echo
+      exit 1
+   fi
+fi
       
 
 # C_Score constant
@@ -353,6 +396,17 @@ then
    exit 1
 fi
 
+
+# Top enzymes
+
+if ! [[ $TOP =~ $int ]] || [ $TOP -lt 1 ] 
+then
+   echo
+   echo "ERROR: The number of enzymes reported in the final output (-t) must be a positive integer. Please change this parameter and rerun the software." >&2
+   echo
+   exit 1
+fi
+
 # Software directory
 
 if [ ! -d "$SOFTDIR" ]
@@ -363,6 +417,15 @@ then
    exit 1
 fi
 
+# Isoschizomers and methylation sensitivity annotation file 
+
+if [ ! -s "$MET" ]
+then
+   echo
+   echo "ERROR: The enzyme annotation file $MET can not be found or it is empty. Please provide a valid file path and rerun the software." >&2
+   echo
+   exit 1
+fi
 
 
 ############################## INITIAL MESSAGING ##############################
@@ -790,9 +853,78 @@ then
 fi
 
 
+###### 6. Generate the final output file.
+
+if [ "$STEP" -lt 6 ]
+then
+
+   SCRIPT6=$SOFTDIR/src/generate_final_output.R
+   check_script $SCRIPT6
+
+   ## If there are no SNE files, exit cuRRBS.
+
+   # Exhaustive mode
+ 
+   if [ $SEARCH = "e" ]
+   then
+      if ! [ -s $OUTDIR/SNE_files/SNE_*.csv_1_enz_exh ] && ! [ -s $OUTDIR/SNE_files/SNE_*.csv_2_enz_exh ]
+      then
+         
+         echo 
+         echo "There are no individual enzymes or enzyme combinations to report and no output file will be created."
+         echo "Please rerun the software with a lower C_Score value (or a higher C_NF/1000 value)."
+         echo
+         exit
+      else
+         SNE1="$OUTDIR/SNE_files/SNE_*.csv_1_enz_exh"
+         SNE2="$OUTDIR/SNE_files/SNE_*.csv_2_enz_exh"
+      fi
+   fi
+
+   # Heuristic mode
+
+   if [ $SEARCH = "h" ]
+   then
+      if ! [ -s $OUTDIR/SNE_files/SNE_*.csv_final_1_enz_heu ] && ! [ -s $OUTDIR/SNE_files/SNE_*.csv_2_enz_heu ]
+      then
+
+         echo 
+         echo "There are no individual enzymes or enzyme combinations to report and no output file will be created."
+         echo "Please rerun the software with a lower C_Score value (or a higher C_NF/1000 value)."
+         echo
+         exit
+      else
+         SNE1="$OUTDIR/SNE_files/SNE_*.csv_final_1_enz_heu"
+         SNE2="$OUTDIR/SNE_files/SNE_*.csv_2_enz_heu"
+      fi
+   fi
 
 
-##############
+   ## Run the script.
+
+   echo
+   echo "STEP 6: Creating the final output file ..." 
+
+   Rscript $SCRIPT6 -s $SNE1 \
+      -t $SNE2 \
+      -f $OUTDIR/df_files/ \
+      -e $MET \
+      -l $SA_FILE \
+      -p $OUTDIR \
+      -a $ADAPT \
+      -r $RL \
+      -d $ERROR \
+      -b $TOP \
+      -i $INCLUDE
+   
+   # Update CHECKPOINT file
+
+   echo "6 create_output_file" >> $OUTDIR/logs/CHECKPOINT
+   STEP=6
+
+fi
+
+
 
 echo
 echo 'cuRRBS finished OK.'
