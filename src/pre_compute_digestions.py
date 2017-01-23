@@ -1,68 +1,80 @@
 # -*- coding: utf-8 -*-
-"""
------------------------------
-Daniel Elias Martin Herranz
-21/09/16
-EMBL-EBI
-Thornton group
------------------------------
-
-This script creates the pre-computed digestions for each one of the enzymes in
-enzymes_to_pre_compute.txt. Each one of the precomputed files contains the 
-cleavage sites of the correspoding enzyme for genome.fa. One cleavage site is 
-stored per line as an integer, with the different cleavage sites per chromosome 
-separated by lines starting with '>name_of_chr' (e.g. '>chr1').
-
-e.g.
-
->chr1
-1
-456
-12789
->chr2
-1
-7895
-46783
-
-The files with the pre-computed digestions will be used afterwards to speed up
-the rest of the pipeline by removing redundancy in the computations for the 
-different enzyme combinations.
-
------------------------------
-
-Usage of the script:
-
-python pre_compute_digestions.py enzymes_to_pre_compute.txt genome.fa working_directory
-
------------------------------
-
-Parameters:
-
-    enzymes_to_pre_compute.txt: absolute path to the text file which contains 
-                                the enzymes for which the digestions will be 
-                                pre-computed. Each enzyme is stored in one line.
-                                
-                                e.g. 
-
-                                AanI
-                                AarI
-                                AasI
-                                Acc36I
-                                Acc65I
-                                
-                                
-    genome.fa: absolute path to the FASTA file which contains the genome to be used
-               for the in silico digestions.
-               
-    working_directory: absolute path to the working directory. The software will 
-                       create a directory called 'pre_computed_files' inside the 
-                       working directory where the pre-computed files will be stored.
-                      
-                       e.g. if the working directory is '~/Desktop/work_dir/' the 
-                            files will be stored in '~/Desktop/work_dir/pre_computed_files/' 
-    
------------------------------ 
-"""
+###########################################################################################
+#########      cuRRBS: customized Reduced Representation Bisulfite Sequencing     #########
+###########################################################################################
+#
+# Created by Daniel E. Martin-Herranz and Thomas Stubbs.
+#
+# Copyright (C) 2016,2017 D.E. Martin-Herranz, T. Stubbs.
+# 
+# This program is free software: you can redistribute it and/or modify it under the terms 
+# of the GNU General Public License as published by the Free Software Foundation, either 
+# version 3 of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+# without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+# See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with this program. 
+# If not, see <http://www.gnu.org/licenses/>.
+#
+###########################################################################################
+#
+# DESCRIPTION OF THE SCRIPT:
+#
+# This script creates the pre-computed digestions for each one of the enzymes in
+# enzymes_to_pre_compute.txt. Each one of the precomputed files contains the 
+# cleavage sites of the correspoding enzyme for genome.fa. One cleavage site is 
+# stored per line as an integer, with the different cleavage sites per chromosome 
+# separated by lines starting with '>name_of_chr' (e.g. '>chr1').
+#
+# e.g.
+#
+# >chr1
+# 1
+# 456
+# 12789
+# >chr2
+# 1
+# 7895
+# 46783
+#
+# The files with the pre-computed digestions will be used afterwards to speed up
+# the rest of the pipeline by removing redundancy in the computations for the 
+# different enzyme combinations.
+#
+###########################################################################################
+#
+# USAGE:
+#
+# python pre_compute_digestions.py enzymes_to_pre_compute.txt genome.fa working_directory
+#
+# COMPULSORY PARAMETERS:
+#
+#    enzymes_to_pre_compute.txt: absolute path to the text file which contains 
+#                                the enzymes for which the digestions will be 
+#                                pre-computed. Each enzyme is stored in one line.
+#                                
+#                                e.g. 
+#
+#                                AanI
+#                                AarI
+#                                AasI
+#                                Acc36I
+#                                Acc65I
+#                                
+#                                
+#    genome.fa: absolute path to the FASTA file which contains the genome to be used
+#               for the in silico digestions.
+#               
+#    working_directory: absolute path to the working directory. The software will 
+#                       create a directory called 'pre_computed_files' inside the 
+#                       working directory where the pre-computed files will be stored.
+#                      
+#                       e.g. if the working directory is '~/Desktop/work_dir/' the 
+#                           files will be stored in '~/Desktop/work_dir/pre_computed_files/' 
+#    
+###########################################################################################
 
 #### Dependencies ####
 

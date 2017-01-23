@@ -1,26 +1,38 @@
 ###########################################################################################
-#########                                                                         #########
-#########                     Daniel Elias Martin Herranz                         #########
-#########                             28/10/2016                                  #########
-#########                              EMBL-EBI                                   #########
-#########                           Thornton group                                #########
-#########                                                                         #########
+#########      cuRRBS: customized Reduced Representation Bisulfite Sequencing     #########
 ###########################################################################################
-
+#
+# Created by Daniel E. Martin-Herranz and Thomas Stubbs.
+#
+# Copyright (C) 2016,2017 D.E. Martin-Herranz, T. Stubbs.
+# 
+# This program is free software: you can redistribute it and/or modify it under the terms 
+# of the GNU General Public License as published by the Free Software Foundation, either 
+# version 3 of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+# without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+# See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with this program. 
+# If not, see <http://www.gnu.org/licenses/>.
+#
 ###########################################################################################
-#####  Optimization of a new RRBS assay using a new combination of restriction enzymes ####
+#
+# DESCRIPTION OF THE SCRIPT: 
+#
+# Given the fl_distributions_x_enzymes.txt and fragments_of_interest_x_enzymes.txt files 
+# obtained with the obtain_distributions_and_fragments.py script, this script finds the best 
+# size range (the one that minimizes the Enrichment Value) for some given sets of NF/1000 
+# and Score thresholds and for each one of the enzyme(s)(combinations) in the input files.
+# The search is performed deterministically, so it can take a while (proportional to the 
+# number of size ranges and enzyme combinations to check). This information is stored in 
+# the SNE_deterministic.csv_XXX file (where XXX is an index used for parallelization purposes).
+#
 ###########################################################################################
-##### Given the fl_distributions_x_enzymes.txt and fragments_of_interest_x_enzymes.txt ####  
-##### files obtained with the obtain_distributions_and_fragments.py script, this script ###
-##### finds the best size range (the one that minimizes the Enrichment Value) for some ####
-##### given sets of NF/1000 and Score thresholds and for each one of the enzyme(s)     ####
-##### (combinations) in the input files.                                               ####
-##### The search is performed deterministically, so it can take a while (proportional to ##
-##### the number of size ranges and enzyme combinations to check).                     ####
-##### This information is stored in the SNE_deterministic.csv_XXX file (where XXX is   ####
-##### an index used for parallelization purposes).                                     ####
-###########################################################################################
-##### USAGE: Rscript calculate_SNE_deterministic.R --help                              ####
+#
+# USAGE: Rscript calculate_SNE_deterministic.R --help
+#                             
 ###########################################################################################
 
 

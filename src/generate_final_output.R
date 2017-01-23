@@ -1,35 +1,48 @@
 ###########################################################################################
-#########                                                                         #########
-#########                     Daniel Elias Martin Herranz                         #########
-#########                             18/01/2017                                  #########
-#########                              EMBL-EBI                                   #########
-#########                           Thornton group                                #########
-#########                                                                         #########
+#########      cuRRBS: customized Reduced Representation Bisulfite Sequencing     #########
 ###########################################################################################
-
+#
+# Created by Daniel E. Martin-Herranz and Thomas Stubbs.
+#
+# Copyright (C) 2016,2017 D.E. Martin-Herranz, T. Stubbs.
+# 
+# This program is free software: you can redistribute it and/or modify it under the terms 
+# of the GNU General Public License as published by the Free Software Foundation, either 
+# version 3 of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+# without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+# See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with this program. 
+# If not, see <http://www.gnu.org/licenses/>.
+#
 ###########################################################################################
-#####  Optimization of a new RRBS assay using a new combination of restriction enzymes ####
+#
+# DESCRIPTION OF THE SCRIPT: 
+#
+# This script takes the SNE files available and generates the final output in a CSV file, 
+# which contains the following columns:                                
+#                                                                                  
+#       1. Enzyme / enzyme combination                                             
+#       2. Optimal experimental size range                                         
+#       3. Optimal theoretical size range                                          
+#       4. Score value                                                             
+#       5. % of maximum Score achieved                                             
+#       6. NF/1000 value                                                           
+#       7. Cost reduction factor (CRF) = (NF/1000 for original MspI / NF/1000 value)  
+#       8. Enrichment Value (EV)                                                   
+#       9. Robustness measure                                                      
+#       10. Thresholds used (C_Score | C_NF/1000)                                   
+#       (11.) Number of sites of interest that will be sequenced theoretically     
+#       (12.) IDs of the sites of interest that will be sequenced theoretically    
+#                                                                                  
+# The enzymes are ordered by the EV value (from minimum to maximum) i.e. from the best one 
+# to the worse one (considering only Score and NF/1000 values).
 ###########################################################################################
-##### This script takes the SNE files available and generates the final output in a    ####
-##### CSV file, with the following columns:                                            ####
-#####                                                                                  ####
-#####       1. Enzyme / enzyme combination                                             ####
-#####       2. Optimal experimental size range                                         ####
-#####       3. Optimal theoretical size range                                          ####
-#####       4. Score value                                                             ####
-#####       5. % of maximum Score achieved                                             ####
-#####       6. NF/1000 value                                                           ####
-#####       7. Cost reduction factor (CRF) = (NF/1000 for original MspI / NF/1000 value)  #
-#####       8. Enrichment Value (EV)                                                   ####
-#####       9. Robustness measure                                                      ####
-#####       10. Thresholds used (C_Score | C_NF/1000)                                   ####
-#####       (11.) Number of sites of interest that will be sequenced theoretically     ####
-#####       (12.) IDs of the sites of interest that will be sequenced theoretically    ####
-#####                                                                                  ####
-##### The enzymes are ordered by the EV value (from minimum to maximum) i.e. from the  ####
-##### best one to the worse one (considering only Score and NF/1000 values).           ####
-###########################################################################################
-##### USAGE: Rscript generate_final_output.R --help                                    ####
+#
+# USAGE: Rscript generate_final_output.R --help     
+#
 ###########################################################################################
 
 

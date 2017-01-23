@@ -1,22 +1,37 @@
 ###########################################################################################
-#########                                                                         #########
-#########                     Daniel Elias Martin Herranz                         #########
-#########                             16/01/2017                                  #########
-#########                              EMBL-EBI                                   #########
-#########                           Thornton group                                #########
-#########                                                                         #########
+#########      cuRRBS: customized Reduced Representation Bisulfite Sequencing     #########
+###########################################################################################
+#
+# Created by Daniel E. Martin-Herranz and Thomas Stubbs.
+#
+# Copyright (C) 2016,2017 D.E. Martin-Herranz, T. Stubbs.
+# 
+# This program is free software: you can redistribute it and/or modify it under the terms 
+# of the GNU General Public License as published by the Free Software Foundation, either 
+# version 3 of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+# without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+# See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with this program. 
+# If not, see <http://www.gnu.org/licenses/>.
+#
+###########################################################################################
+#
+# DESCRIPTION OF THE SCRIPT: 
+#
+# Extract the desired enzymes (or enzyme combinations) from fl_distributions_x_enzymes.txt
+# and fragments_of_interest_x_enzymes.txt files. The enzymes (or enzyme combinations) to 
+# extract are provided in a list as input. The output is created in the same folder where 
+# the original files are located.
+#
+###########################################################################################
+#
+# USAGE: Rscript extract_from_df_files.R --help
+#
 ###########################################################################################
 
-###########################################################################################
-#####  Optimization of a new RRBS assay using a new combination of restriction enzymes ####
-###########################################################################################
-##### Extract the desired enzymes (or enzyme combinations) from fl_distributions_x_enzymes.txt
-##### and fragments_of_interest_x_enzymes.txt files. The enzymes (or enzyme combinations) #
-##### to extract are provided in a list as input. The output is created in the same    ####
-##### folder where the original files are located.                                     ####
-###########################################################################################
-##### USAGE: Rscript extract_from_df_files.R --help                                    ####
-###########################################################################################
 
 ###########################################################
 ##################### Dependencies ########################

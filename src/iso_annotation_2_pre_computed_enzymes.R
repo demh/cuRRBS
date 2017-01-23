@@ -1,24 +1,39 @@
 ###########################################################################################
-#########                                                                         #########
-#########                     Daniel Elias Martin Herranz                         #########
-#########                             28/12/2016                                  #########
-#########                              EMBL-EBI                                   #########
-#########                           Thornton group                                #########
-#########                                                                         #########
+#########      cuRRBS: customized Reduced Representation Bisulfite Sequencing     #########
 ###########################################################################################
+#
+# Created by Daniel E. Martin-Herranz and Thomas Stubbs.
+#
+# Copyright (C) 2016,2017 D.E. Martin-Herranz, T. Stubbs.
+# 
+# This program is free software: you can redistribute it and/or modify it under the terms 
+# of the GNU General Public License as published by the Free Software Foundation, either 
+# version 3 of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+# without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+# See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with this program. 
+# If not, see <http://www.gnu.org/licenses/>.
+#
 ###########################################################################################
-#####  Optimization of a new RRBS assay using a new combination of restriction enzymes ####
+#
+# DESCRIPTION OF THE SCRIPT: 
+#
+# Given the annotation file with the isoschizomer and methylation-sensitivity information 
+# for the comercially available enzymes (e.g. isoschizomers_CpG_annotation.csv), create the 
+# "enzymes_to_pre_compute.txt" file that will be used by the "pre_compute_digestions.py" 
+# script. Only the first enzyme of an isoschizomer family that contains at least one 
+# methylation-insensitive enzyme (0) will be stored in the file. This enzyme will represent 
+# all the enzymes of the family along the cuRRBS pipeline to avoid redundant computations.
+#
 ###########################################################################################
-##### Given the annotation file with the isoschizomer and methylation-sensitivity      ####
-##### information for the comercially available enzymes (e.g. isoschizomers_CpG_annotation.csv),
-##### create the "enzymes_to_pre_compute.txt" file that will be used by the            ####
-##### "pre_compute_digestions.py" script.                                              ####
-##### Only the first enzyme of an isoschizomer family that contains at least one       #### 
-##### methylation-insensitive enzyme (0) will be stored in the file. This enzyme       ####
-##### will represent all the enzymes of the family to avoid redundant computations.    ####
+#
+# USAGE: Rscript iso_annotation_2_pre_computed_enzymes.R --help
+#
 ###########################################################################################
-##### USAGE: Rscript iso_annotation_2_pre_computed_enzymes.R --help                    ####
-###########################################################################################
+
 
 ###########################################################
 ##################### Dependencies ########################
