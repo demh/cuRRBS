@@ -748,7 +748,6 @@ then
    then
       
       echo "        There are no 2-enzyme combinations to check. Jumping directly to STEP 6."
-      echo
       STEP=5
 
    else

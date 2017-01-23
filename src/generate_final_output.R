@@ -543,21 +543,78 @@ calculate_robustness <- function(fld_info, fragments_info, optimal_sr, rl, exp_e
 
 sites_ann <- read.csv(sites_annotation_path);
 
-## SNE files
+## SNE files and df files
 
 raw_input <- data.frame();
 
-if(file.exists(Sys.glob(sne_1_path))){
-      
+if(length(Sys.glob(sne_1_path)) && file.exists(Sys.glob(sne_1_path))){
+  
+  # SNE files    
+  
   raw_1 <- read.csv(file=Sys.glob(sne_1_path), header=F);
   raw_input <- rbind(raw_input, raw_1);
-      
+  
+  # df files
+  
+  raw_fld_1 <- readLines(paste0(df_files_path, '/fl_distributions_1_enzymes.txt'));
+  raw_fragments_1 <- readLines(paste0(df_files_path, '/fragments_of_interest_1_enzymes.txt'));
+  
+  # df files useful info
+  
+  fld_chunk_sep_1 <- grep('>', raw_fld_1);
+  fragments_chunk_sep_1 <- grep('>', raw_fragments_1);
+  fld_headers_1 <- raw_fld_1[fld_chunk_sep_1];
+  fragments_headers_1 <- raw_fragments_1[fragments_chunk_sep_1];
+  fld_enz_combs_1 <- gsub('>', '', fld_headers_1); 
+  fragments_enz_combs_1 <- gsub('>', '', fragments_headers_1);
+  
+  
+  if((length(fld_headers_1) != length(fragments_headers_1))){
+    
+    stop("The input files for 1 enzyme do not have the same number of headers.");
+    
+  }
+  
+  if((!all(fld_enz_combs_1 == fragments_enz_combs_1))){
+    
+    stop('The enzyme combinations are not the same for the fl_distribution_1_enzymes.txt and the fragments_of_interest_1_enzymes.txt files.');
+    
+  }
+  
 }
 
-if(file.exists(Sys.glob(sne_2_path))){
+if(length(Sys.glob(sne_2_path)) && file.exists(Sys.glob(sne_2_path))){
 
+  # SNE file
+  
   raw_2 <- read.csv(file=Sys.glob(sne_2_path), header=F);
   raw_input <- rbind(raw_input, raw_2);
+  
+  # df files
+  
+  raw_fld_2 <- readLines(paste0(df_files_path, '/fl_distributions_2_enzymes.txt'));
+  raw_fragments_2 <- readLines(paste0(df_files_path, '/fragments_of_interest_2_enzymes.txt'));
+  
+  # df files useful info
+  
+  fld_chunk_sep_2 <- grep('>', raw_fld_2);
+  fragments_chunk_sep_2 <- grep('>', raw_fragments_2);
+  fld_headers_2 <- raw_fld_2[fld_chunk_sep_2];
+  fragments_headers_2 <- raw_fragments_2[fragments_chunk_sep_2];
+  fld_enz_combs_2 <- gsub('>', '', fld_headers_2); 
+  fragments_enz_combs_2 <- gsub('>', '', fragments_headers_2);
+  
+  if((length(fld_headers_2) != length(fragments_headers_2))){
+    
+    stop("The input files for 2 enzymes do not have the same number of headers.");
+    
+  }
+  
+  if((!all(fld_enz_combs_2 == fragments_enz_combs_2))){
+    
+    stop('The enzyme combinations are not the same for the fl_distribution_2_enzymes.txt and the fragments_of_interest_2_enzymes.txt files.');
+    
+  }
   
 }
 
@@ -631,44 +688,8 @@ C_NF_1000 <- sapply(strsplit(as.character(top_input[,2]), '_'), function(x){retu
 final_output[,10] <- paste(C_Score, C_NF_1000, sep=' | '); # C_Score | C_NF_1000
 
 
+
 ### 2.4. Fill in the output dataframe: robustness measure, (number of sites), (site IDs)
-
-## Read the raw df files.
-
-raw_fld_1 <- readLines(paste0(df_files_path, '/fl_distributions_1_enzymes.txt'));
-raw_fragments_1 <- readLines(paste0(df_files_path, '/fragments_of_interest_1_enzymes.txt'));
-raw_fld_2 <- readLines(paste0(df_files_path, '/fl_distributions_2_enzymes.txt'));
-raw_fragments_2 <- readLines(paste0(df_files_path, '/fragments_of_interest_2_enzymes.txt'));
-
-## Useful information to identify chunks of data
-
-fld_chunk_sep_1 <- grep('>', raw_fld_1);
-fragments_chunk_sep_1 <- grep('>', raw_fragments_1);
-fld_headers_1 <- raw_fld_1[fld_chunk_sep_1];
-fragments_headers_1 <- raw_fragments_1[fragments_chunk_sep_1];
-fld_enz_combs_1 <- gsub('>', '', fld_headers_1); 
-fragments_enz_combs_1 <- gsub('>', '', fragments_headers_1);
-
-fld_chunk_sep_2 <- grep('>', raw_fld_2);
-fragments_chunk_sep_2 <- grep('>', raw_fragments_2);
-fld_headers_2 <- raw_fld_2[fld_chunk_sep_2];
-fragments_headers_2 <- raw_fragments_2[fragments_chunk_sep_2];
-fld_enz_combs_2 <- gsub('>', '', fld_headers_2); 
-fragments_enz_combs_2 <- gsub('>', '', fragments_headers_2);
-
-if((length(fld_headers_1) != length(fragments_headers_1)) | 
-   (length(fld_headers_2) != length(fragments_headers_2))){
-  
-  stop("The input files do not have the same number of headers.");
-  
-}
-
-if((!all(fld_enz_combs_1 == fragments_enz_combs_1)) | 
-   (!all(fld_enz_combs_2 == fragments_enz_combs_2))){
-  
-  stop('The enzyme combinations are not the same for the fl_distribution_x_enzymes.txt and the fragments_of_interest_x_enzymes.txt files.');
-  
-}
 
 ## Loop over the enzymes combinations
 
