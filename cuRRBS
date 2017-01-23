@@ -25,7 +25,7 @@
 #
 # -k: value for the C_NF/1000 constant. It must be a number (integer or float) in the interval (0,+Inf). Only those enzyme combinations with
 #     a NF/1000 <= C_NF/1000 * ref_NF/1000 are reported. See documentation for more details. Default: 1
-# -u: value for the constant used in heuristic mode. See documentation for more details. Default: 2
+# -u: value for the constant used in 'heuristic' mode. See documentation for more details. Default: 2
 # -d: experimental error assumed when performing the size range selection (in base pairs). When this value is increased, less size ranges
 #     are tested and the software is faster, but it is also more likely to miss a better size range than the one reported. DEFAULT: 20 
 # -t: maximum number of individual enzymes or enzyme combinations that will be reported in the final output file. DEFAULT: 30
@@ -35,13 +35,15 @@
 # Options
 #
 # -i: include the number of sites of interest that will theoretically be sequenced and their respective IDs in the final output file.
-# -n: change the size range mode from deterministic (it returns always the same optimal size range for a given set of window
-#     parameters) to non-deterministic (it uses a Differential Evolution stochastic algorithm to optimize the size range).
-#     In many cases it will be faster than the deterministic mode at the expense of accuracy.
-# -x: change the search mode from heuristic (only the 2-enzyme combinations in which one of the individual enzymes had an
-#     individual Score >= (C_score * max_score) / h are computed) to exhaustive (all 2-enzyme combinations are checked). This
+# -n: change the size range mode from 'deterministic' (it returns always the same optimal size range for a given set of window
+#     parameters) to 'non-deterministic' (it uses a Differential Evolution stochastic algorithm to optimize the size range).
+#     In many cases it will be faster than the 'deterministic' mode at the expense of accuracy.
+# -x: change the search mode from 'heuristic' (only the 2-enzyme combinations in which one of the individual enzymes had an
+#     individual Score >= (C_score * max_score) / h are computed) to 'exhaustive' (all 2-enzyme combinations are checked). This
 #     increases the chances of finding a better restriction enzyme combination, but at the expense of a big increase in 
 #     computational time and memory. Use at your own risk !!
+# -y: change the search mode from 'heuristic' to 'individual' (only individual enzymes are checked, without attempting to find 2-enzyme combinations).
+#     This reduces the computational time and the memory needed by the software.
 # -h: print the help page and exit.
 # -v: print the software version and exit. 
 
@@ -129,7 +131,7 @@ TOP="30" # Max number top enzymes
 
 INCLUDE="N" # Include information regarding sites of interest?
 SR_MODE="d" # Size range mode (deterministic: 'd', non-deterministic: 'nd')
-SEARCH="h"  # Search mode (heuristc: 'h', exhaustive: 'e')
+SEARCH="h"  # Search mode (heuristc: 'h', exhaustive: 'e', individual: 'i')
 
 SOFTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" # Path to the main folder with the software
 
@@ -138,7 +140,7 @@ MET="$SOFTDIR/utils/isoschizomers_CpG_annotation.csv" # Absolute path to the fil
 
 ## Parsing 
 
-while getopts ":o:p:e:a:r:s:c:k:u:d:t:m:inxhv?" OPT; do
+while getopts ":o:p:e:a:r:s:c:k:u:d:t:m:inxyhv?" OPT; do
 	case $OPT in
 		o)
      		  OUTDIR=$OPTARG
@@ -184,6 +186,9 @@ while getopts ":o:p:e:a:r:s:c:k:u:d:t:m:inxhv?" OPT; do
 		  ;;
                 x)
                   SEARCH='e'
+                  ;;
+                y)
+                  SEARCH='i'
                   ;;
 		h)
      		  print_help
@@ -690,12 +695,32 @@ then
      fi      
    fi
 
+   
+   # For the individual mode
+
+   if [ $SEARCH = "i" ]
+   then
+
+      Rscript $SCRIPT2 -f $OUTDIR/df_files/fl_distributions_1_enzymes.txt \
+          -c $OUTDIR/df_files/fragments_of_interest_1_enzymes.txt       \
+          -l $SA_FILE \
+          -p $OUTDIR/SNE_files/ \
+          -r $RL \
+          -t $C_NF \
+          -x $C_SCORE \
+          -a 20 \
+          -b 800 \
+          -s $ERROR \
+          -w $ERROR \
+          -d '1_enz_ind'
+   fi
+
    # If no individual enzymes satisfied the thresholds. 
 
    if ! [[ -n "$(ls $OUTDIR/SNE_files/)" ]]
    then
 
-      if [ $SEARCH = "h" ]
+      if [ $SEARCH = "h" ] || [ $SEARCH = "i" ]
       then
       
          # Update CHECKPOINT file and quit
@@ -719,8 +744,17 @@ then
    # Update CHECKPOINT file
 
    echo "2 sne_file_1_enzyme" >> $OUTDIR/logs/CHECKPOINT
-   STEP=2
+   
+   if [ $SEARCH = "e" ] || [ $SEARCH = "h" ]
+   then
+      STEP=2
+   fi
 
+   if [ $SEARCH = "i" ]
+   then
+      echo "        The 'individual' search mode is active. Jumping directly to STEP 6."
+      STEP=5
+   fi
 fi
 
 
@@ -916,6 +950,11 @@ then
       fi
    fi
 
+   if [ $SEARCH = "i" ] 
+   then
+      SNE1="$OUTDIR/SNE_files/SNE_*.csv_1_enz_ind"
+      SNE2="NA"
+   fi
 
    ## Run the script.
 
