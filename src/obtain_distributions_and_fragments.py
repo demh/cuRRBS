@@ -277,7 +277,7 @@ for element in all_enzymes:
     
     for enzyme in chosen_enzymes:
         
-        index_file = open(index_files_path + enzyme + '_pre_computed.txt', 'r')
+        index_file = open(index_files_path + '/' + enzyme + '_pre_computed.txt', 'r')
         data_all_enzymes.append(index_file.read().splitlines()) # Avoid newline characters
         index_file.close()
     
