@@ -133,10 +133,25 @@ if(search_mode == 'e'){
 
 if(search_mode == 'h'){
   
-  ## Obtain the enzymes that will serve as seeds (those with Score > (C_Score * max_Score / h))
+  ## Obtain the enzymes that will serve as seeds (those with Score > (C_Score * max_Score / h)).
   
   raw_seed <- read.csv(SNE_file_path, header=F);
+  raw_seed <- raw_seed[order(raw_seed[,6]),]; # Order the seeds according to EV
+
   seed_enzymes <- unique(as.character(raw_seed[,1]));
+  
+  #  Fix an absolute maximum of enzymes that will be used as seeds.
+  
+  max_seeds <- 20; # This parameter can be changed
+  
+  if(length(seed_enzymes) > max_seeds){
+    
+    cat(paste0('        WARNING: The number of enzymes that passed the heuristic threshold is greater than the \
+        maximum allowed for the heuristic mode (', max_seeds, '). Only the top ', max_seeds, ' enzymes will be used to make \
+        the enzyme combinations.'), sep='\n');
+    seed_enzymes <- seed_enzymes[1:max_seeds];
+    
+  }
   
   ## Combine all enzymes to check with seeds to form combinations.
   
