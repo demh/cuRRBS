@@ -614,6 +614,124 @@ fi
 
 
 
+###### 0.3. Implementation of an INPUT file ######
+
+# If the file already exists
+
+if [ -s "$OUTDIR/logs/INPUT" ]
+then 
+
+   echo
+   echo "INPUT file found. Checking that the input arguments are coherent with the previous run ..."
+
+   ALLARGS=( $OUTDIR $PCDIR $ENZ_FILE $SA_FILE $RL $ADAPT $C_SCORE $C_NF $H $ERROR $TOP $MET $INCLUDE $SR_MODE $SEARCH $SOFTDIR )
+   INDEXARG=0
+
+   # Only allow changes in the C_Score or C_NF/1000 constants.
+   
+   while read line; do
+
+      OLDARG=$(echo $line | cut -f2 -d" ")
+   
+      if [ "${ALLARGS[${INDEXARG}]}" != "$OLDARG" ]
+      then
+
+         case $INDEXARG in
+
+            6)
+               echo "The C_Score constant has been changed from $OLDARG to ${ALLARGS[${INDEXARG}]}."
+               sed "7s/.*/C_Score_constant ${ALLARGS[${INDEXARG}]}/" <$OUTDIR/logs/INPUT >$OUTDIR/logs/INPUTTEMP
+               mv $OUTDIR/logs/INPUTTEMP $OUTDIR/logs/INPUT
+               ;;
+            7) 
+               echo "The C_NF/1000 constant has been changed from $OLDARG to ${ALLARGS[${INDEXARG}]}."
+               sed "8s/.*/C_NF_1000_constant ${ALLARGS[${INDEXARG}]}/" <$OUTDIR/logs/INPUT >$OUTDIR/logs/INPUTTEMP
+               mv $OUTDIR/logs/INPUTTEMP $OUTDIR/logs/INPUT
+               ;;
+            *)
+               ARGNAME=$(echo $line | cut -f1 -d" ")
+               echo "WARNING: The $ARGNAME has been changed from $OLDARG to ${ALLARGS[${INDEXARG}]}. The software will be run with the 'old' value of the input argument (i.e. $OLDARG)."
+               
+               case $INDEXARG in
+
+                  0)
+                     OUTDIR=$OLDARG
+                     ;;
+                  1)
+                     PCDIR=$OLDARG
+                     ;;
+                  2)
+                     ENZ_FILE=$OLDARG
+                     ;;
+                  3)
+                     SA_FILE=$OLDARG
+                     ;;
+                  4)
+                     RL=$OLDARG
+                     ;;
+                  5)
+                     ADAPT=$OLDARG
+                     ;;
+                  8)
+                     H=$OLDARG
+                     ;;
+                  9)
+                     ERROR=$OLDARG
+                     ;;
+                  10)
+                     TOP=$OLDARG
+                     ;;
+                  11)
+                     MET=$OLDARG
+                     ;;
+                  12)
+                     INCLUDE=$OLDARG
+                     ;;
+                  13)
+                     SR_MODE=$OLDARG
+                     ;;
+                  14)
+                     SEARCH=$OLDARG
+                     ;;
+                  15)
+                     SOFTDIR=$OLDARG
+                     ;;
+               esac
+               ;;
+          esac
+      fi   
+
+      INDEXARG=$((INDEXARG+1))
+
+   done <$OUTDIR/logs/INPUT
+
+# If the file does not exist
+
+else
+   
+   printf "Creating INPUT file ... "
+   
+   echo "output_path $OUTDIR" >> $OUTDIR/logs/INPUT # Path to the output directory
+   echo "pre_computed_files_path $PCDIR" >> $OUTDIR/logs/INPUT  # Path to the folder which contains the pre-computed files
+   echo "enzymes_to_check_path $ENZ_FILE" >> $OUTDIR/logs/INPUT  # Path to the enzymes_to_check.txt file
+   echo "sites_annotation_path $SA_FILE" >> $OUTDIR/logs/INPUT # Path to the sites annotation file
+   echo "read_length $RL" >> $OUTDIR/logs/INPUT # Read length
+   echo "adapters_length $ADAPT" >> $OUTDIR/logs/INPUT # Total size of the adapters
+   echo "C_Score_constant $C_SCORE" >> $OUTDIR/logs/INPUT # C_score constant
+   echo "C_NF_1000_constant $C_NF" >> $OUTDIR/logs/INPUT # C_NF/1000 constant
+   echo "heuristic_constant $H" >> $OUTDIR/logs/INPUT # heuristic (h) constant
+   echo "experimental_error $ERROR" >> $OUTDIR/logs/INPUT # experimental error
+   echo "max_number_reported_enzymes $TOP" >> $OUTDIR/logs/INPUT # Max number top enzymes
+   echo "methylation_sensitivity_families_annotation_path $MET" >> $OUTDIR/logs/INPUT # Absolute path to the file with isoschizomer and methylation sensitivity information
+   echo "include_info_sites_interest $INCLUDE" >> $OUTDIR/logs/INPUT # Include information regarding sites of interest?
+   echo "size_range_mode $SR_MODE" >> $OUTDIR/logs/INPUT # Size range mode (deterministic: 'd', non-deterministic: 'nd')
+   echo "search_mode $SEARCH" >> $OUTDIR/logs/INPUT  # Search mode (heuristc: 'h', exhaustive: 'e', individual: 'i')
+   echo "software_path $SOFTDIR" >> $OUTDIR/logs/INPUT # Path to the main folder with the software
+
+   printf "OK\n"
+
+fi
+
 ###### 1. Create the files which contain the information with the fragment length distributions and the
 #         location of the fragments that contain the sites of interest for all the individual enzymes. 
 
@@ -985,7 +1103,7 @@ then
 
          echo 
          echo "There are no individual enzymes or enzyme combinations to report and no output file will be created."
-         echo "Please rerun the software with a lower C_Score value (or a higher C_NF/1000 value)."
+         echo "Please rerun the software with a lower C_Score value (or a higher C_NF/1000 value) in a new output directory."
          echo
          exit
       else
@@ -1025,6 +1143,8 @@ then
 fi
 
 
+### Only finished OK if the output file is there.
+### Indicate where the utput file is located.
 
 echo
 echo 'cuRRBS finished OK.'
