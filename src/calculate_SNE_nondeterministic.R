@@ -83,8 +83,8 @@ option_list <-  list(
               help="Integer (named NT) or vector (e.g. '0.5,1,40') used to calculate the different NF/1000 thresholds \
               which will filter the final output. NT takes values in the interval (0, +Inf). \
               Only those size ranges with NF/1000 <= NT * ref_NF/1000 are kept.  \ 
-              By default, ref_NF/1000 is the NF/1000 value for MspI in its original protocol (theoretical size range: 40-220 bp) \
-              i.e. 655.085. DEFAULT='1'",
+              By default, ref_NF/1000 is the NF/1000 value for MspI in a theoretical size range of 20-800 bp. \
+              i.e. 1343.468. DEFAULT='1'",
               metavar='character'),
   
   make_option(c('-x', '--Score_thresholds'), type='character', default='0.1', 
@@ -187,7 +187,7 @@ Score_thr <- ST * max_score;
 
 # Calculate absolute NF/1000 thresholds.
 
-ref_NF_1000 <- 655.085;  # NF/1000 value for MspI in the original protocol (40-220 bp). It can be modified to compare with other protocol.
+ref_NF_1000 <- 1343.468;  # It can be modified to compare with other protocol.
 NF_thr <- NT * ref_NF_1000;
 
 

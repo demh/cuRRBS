@@ -30,7 +30,7 @@
 #       4. Score value                                                             
 #       5. % of maximum Score achieved                                             
 #       6. NF/1000 value                                                           
-#       7. Cost reduction factor (CRF) = (NF/1000 for original MspI / NF/1000 value)  
+#       7. Cost reduction factor (CRF) = (NF/1000 for reference MspI / NF/1000 value)  
 #       8. Enrichment Value (EV)                                                   
 #       9. Robustness measure                                                      
 #       10. Thresholds used (C_Score | C_NF/1000)                                   
@@ -128,7 +128,7 @@ CSV file, with the following columns: \
        4. Score value \
        5. % of maximum Score achieved \
        6. NF/1000 value \
-       7. Cost reduction factor (CRF) = (NF/1000 for original MspI / NF/1000 value) \
+       7. Cost reduction factor (CRF) = (NF/1000 for reference MspI / NF/1000 value) \
        8. Enrichment Value (EV) \
        9. Robustness measure \
        10. Thresholds used (C_Score | C_NF/1000) \
@@ -691,7 +691,7 @@ final_output[,5] <- round((final_output[,4] / max_score) * 100, digits=2);  # % 
 
 final_output[,6] <- top_input[,4]; # NF/1000
 
-ref_NF_1000 <- 655.085; # NF/1000 value for MspI in original protocol
+ref_NF_1000 <- 1343.468; # NF/1000 value for MspI in reference protocol
 final_output[,7] <- round(ref_NF_1000 / final_output[,6], digits=2); # Cost Reduction Factor
 
 final_output[,8] <- top_input[,6];  # EV
