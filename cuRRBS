@@ -1143,13 +1143,19 @@ then
 fi
 
 
-### Only finished OK if the output file is there.
-### Indicate where the utput file is located.
+###### Create the final message if the output file was created #####
 
-echo
-echo 'cuRRBS finished OK.'
-echo
+if [ -s $OUTDIR/final_cuRRBS_output.csv ]
+then 
 
+   echo
+   echo 'cuRRBS finished its execution successfully !'
+   echo "The output of the software can be found in the following file: ${OUTDIR}/final_cuRRBS_output.csv."
+   echo
+   echo 'If cuRRBS was useful for your research please cite our paper and follow us on https://github.com/demh.'
+   echo 
+
+fi
 
 ############################ END OF THE SCRIPT ###############################
 
