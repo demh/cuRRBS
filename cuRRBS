@@ -145,6 +145,20 @@ $SOFTDIR/src folder contains all the source code and rerun the software." >&2
 }
 
 
+# control_c()
+# Stop the entire bash script when the user triggers Control+C
+
+control_c()
+{
+    echo "cuRRBS interrupted by the user."
+    # Kill the parent process of the script.
+    kill $PPID
+    exit 1
+}
+
+trap 'control_c' INT
+
+
 ############################### HANDLING ARGUMENTS ############################
 
 
@@ -1152,7 +1166,7 @@ then
    echo 'cuRRBS finished its execution successfully !'
    echo "The output of the software can be found in the following file: ${OUTDIR}/final_cuRRBS_output.csv."
    echo
-   echo 'If cuRRBS was useful for your research please cite our paper and follow us on https://github.com/demh.'
+   echo 'If cuRRBS was useful for your research, please cite our paper and follow us on https://github.com/demh.'
    echo 
 
 fi
