@@ -259,6 +259,7 @@ print_count = 1
 
 for element in all_enzymes:
 
+    sys.stdout.flush()
     print('        Processing enzyme (or enzyme combination) ' + str(print_count) + '/'+ 
     str(len(all_enzymes)) + ' ...')        
     
