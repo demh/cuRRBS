@@ -751,6 +751,7 @@ else
 
 fi
 
+
 ###### 1. Create the files which contain the information with the fragment length distributions and the
 #         location of the fragments that contain the sites of interest for all the individual enzymes. 
 
@@ -1102,6 +1103,7 @@ then
       if ! [ -s $OUTDIR/SNE_files/SNE_*.csv_1_enz_exh ] && ! [ -s $OUTDIR/SNE_files/SNE_*.csv_2_enz_exh ]
       then
          
+         echo "6 no_output_exhaustive" >> $OUTDIR/logs/CHECKPOINT
          echo 
          echo "There are no individual enzymes or enzyme combinations to report and no output file will be created."
          echo "Please rerun the software with a lower C_Score value (or a higher C_NF/1000 value)."
@@ -1157,7 +1159,109 @@ then
    # Update CHECKPOINT file
 
    echo "6 create_output_file" >> $OUTDIR/logs/CHECKPOINT
-   STEP=6
+   STEP=99 # Fix high STEP value to avoid entering the step 7 (especial case).
+
+fi
+
+
+###### 7. Especial case in the exhaustive mode: if no output was generated because
+# no enzymes or enzyme combinations could be found under the current thresholds,
+# rerun the SNE calculations with the new thresholds avoiding the generation of df
+# files again (which are already there). Finally, try to generate the output again.
+
+if [ "$STEP" -lt 7 ] && [ $SEARCH = "e" ]
+then
+
+   echo
+   echo "ESPECIAL CASE (only in exhaustive mode): rerun STEPs 2, 5 and 6 for the new set of thresholds ..."
+   
+   ## Select the appropiate script, depending on the size range mode.
+
+   if [ $SR_MODE = 'd' ]
+   then
+      SCRIPTE1=$SOFTDIR/src/calculate_SNE_deterministic.R
+   fi
+
+   if [ $SR_MODE = 'nd' ]
+   then
+      SCRIPTE1=$SOFTDIR/src/calculate_SNE_nondeterministic.R
+   fi
+
+   check_script $SCRIPTE1
+
+
+   ## Run the script.
+
+   echo
+   echo "STEP 2: Finding the optimal size range for all the individual enzymes ..."
+
+   Rscript $SCRIPTE1 -f $OUTDIR/df_files/fl_distributions_1_enzymes.txt \
+          -c $OUTDIR/df_files/fragments_of_interest_1_enzymes.txt       \
+          -l $SA_FILE \
+          -p $OUTDIR/SNE_files/ \
+          -r $RL \
+          -t $C_NF \
+          -x $C_SCORE \
+          -a 20 \
+          -b 800 \
+          -s $ERROR \
+          -w $ERROR \
+          -d '1_enz_exh'
+
+   echo
+   echo "STEP 5: Finding the optimal size range for the 2-enzyme combinations ..."
+
+   Rscript $SCRIPTE1 -f $OUTDIR/df_files/fl_distributions_2_enzymes.txt \
+          -c $OUTDIR/df_files/fragments_of_interest_2_enzymes.txt       \
+          -l $SA_FILE \
+          -p $OUTDIR/SNE_files/ \
+          -r $RL \
+          -t $C_NF \
+          -x $C_SCORE \
+          -a 20 \
+          -b 800 \
+          -s $ERROR \
+          -w $ERROR \
+          -d '2_enz_exh'
+
+
+   if ! [ -s $OUTDIR/SNE_files/SNE_*.csv_1_enz_exh ] && ! [ -s $OUTDIR/SNE_files/SNE_*.csv_2_enz_exh ]
+   then
+
+      echo "6 no_output_exhaustive" >> $OUTDIR/logs/CHECKPOINT
+      echo 
+      echo "There are no individual enzymes or enzyme combinations to report and no output file will be created."
+      echo "Please rerun the software with a lower C_Score value (or a higher C_NF/1000 value)."
+      echo
+      exit
+
+   else
+      
+      SNE1="$OUTDIR/SNE_files/SNE_*.csv_1_enz_exh"
+      SNE2="$OUTDIR/SNE_files/SNE_*.csv_2_enz_exh"
+
+      SCRIPTE2=$SOFTDIR/src/generate_final_output.R
+      check_script $SCRIPTE2
+
+      echo
+      echo "STEP 6: Creating the final output file ..." 
+
+      Rscript $SCRIPTE2 -s $SNE1 \
+      -t $SNE2 \
+      -f $OUTDIR/df_files/ \
+      -e $MET \
+      -l $SA_FILE \
+      -p $OUTDIR \
+      -a $ADAPT \
+      -r $RL \
+      -d $ERROR \
+      -b $TOP \
+      -i $INCLUDE
+
+      # Update CHECKPOINT file
+
+      echo "6 redo_SNE_and_output" >> $OUTDIR/logs/CHECKPOINT
+   fi
 
 fi
 
