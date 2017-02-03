@@ -511,15 +511,29 @@ fi
 
 ############################## INITIAL MESSAGING ##############################
 
-
-echo
-echo "cuRRBS Initial messaging" >&1
-echo
+echo >&1
+echo >&1
+echo "########################################################################################### " >&1
+echo "#########      cuRRBS: customized Reduced Representation Bisulfite Sequencing     ######### " >&1
+echo "########################################################################################### " >&1
+echo >&1
+echo "Created by Daniel E. Martin-Herranz and Thomas Stubbs. " >&1
+echo >&1
+echo "Copyright (C) 2016,2017 D.E. Martin-Herranz, T. Stubbs. " >&1
+echo >&1
+echo "This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome 
+to redistribute it under the conditions in the GPU GPL-3.0 license." >&1
+echo >&1
+echo "########################################################################################### " >&1
+echo >&1
+echo >&1
+echo "Starting cuRRBS v$VERSION on `date`." >&1
+echo "Please relax and enjoy to pleasure of in silico digestions." >&1
 
 
 ############################### DEPENDENCIES CHECK ############################
 
-echo
+echo >&1
 printf "Checking the dependencies ... " >&1
 
 ###### PYTHON LIBRARIES ######
@@ -562,7 +576,7 @@ done
 
 
 printf "OK" >&1
-echo
+echo >&1
 
 ############################### RUNNING PIPELINE ##############################
 
