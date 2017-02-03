@@ -6,7 +6,6 @@ import csv
 import numpy
 import bisect
 import collections
-import cPickle as pickle
 
 # working directory
 os.chdir(str(sys.argv[4]))
@@ -15,7 +14,7 @@ os.chdir(str(sys.argv[4]))
 index_files_path = str(sys.argv[3])
 
 def find_fragment(cleaving_sites, coordinate):    
-    index_coord = bisect.bisect_left(cleaving_sites, coordinate) - 1 #!!!WHY IS THIS NECESSARY
+    index_coord = bisect.bisect(cleaving_sites, coordinate)- 1 #!!!WHY IS THIS NECESSARY
     if index_coord == len(cleaving_sites):
         index_coord -= 1    # this does not give the corrent end and lenght    
     start = cleaving_sites[index_coord]
@@ -88,16 +87,20 @@ for no, enzyme_file_line in enumerate(enzyme_file_lines):
                     fragments_sites_dict[fragment_info] = [site_chr_coord[0]]
                 
     all_fragment_sizes_final = numpy.sort(numpy.concatenate(all_fragment_sizes))
-    counts_fragment_sizes, edges = numpy.histogram(
-        numpy.array(all_fragment_sizes_final), bins=range(20,1002))
+    #counts_fragment_sizes, edges = numpy.histogram(
+    #    numpy.array(all_fragment_sizes_final), bins=10, range=(20,30))
+    counts_fragment_sizes = numpy.bincount(all_fragment_sizes_final)
+    #print(counts_fragment_sizes)
 
     output_name = 'fl_distributions_{}_enzymes.txt'.format(len(chosen_enzymes))
     fsd_file = open(output_name, 'a') 
     fsd_file.write('>' + '_'.join(map(str,chosen_enzymes)) + '\n')
     writer = csv.writer(fsd_file)
     #for key, value in counts_fragment_sizes.items():
-    for no, count in enumerate(counts_fragment_sizes):
-        writer.writerow([edges[no], count])
+    fg_min = 20
+    fg_max = 800
+    for no, count in enumerate(counts_fragment_sizes[fg_min:fg_max+1]):
+        writer.writerow([fg_min+no, count])
     fsd_file.close()
     
     output_name_sites = 'fragments_of_interest_{}_enzymes.txt'.format(len(chosen_enzymes))
