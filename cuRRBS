@@ -469,10 +469,10 @@ fi
 
 # Experimental error
 
-if ! [[ $ERROR =~ $int ]] || [ $ERROR -lt 1 ] || [ $ERROR -gt 500 ]
+if ! [[ $ERROR =~ $int ]] || [ $ERROR -lt 1 ] || [ $ERROR -gt 200 ]
 then
    echo
-   echo "ERROR: The experimental error (-d) must be an integer between 1 and 500. Please change this parameter and rerun the software." >&2
+   echo "ERROR: The experimental error (-d) must be an integer between 1 and 200. Please change this parameter and rerun the software." >&2
    echo
    exit 1
 fi
