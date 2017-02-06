@@ -546,8 +546,16 @@ do
 	
 	if [ $? -eq 1 ]
 	then
-	echo "ERROR: The Python library $lib is not installed. Please install it so the software can run." >&2
-	echo
+	   if [ $lib != "Bio" ]
+           then
+              echo
+              echo "ERROR: The Python library '$lib' is not installed. Please install it so the software can run." >&2
+	      echo
+           else 
+              echo
+              echo "ERROR: The Python library 'Biopython' is not installed. Please install it so the software can run." >&2
+              echo
+           fi
 	exit 1
 	fi 	
 
