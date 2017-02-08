@@ -538,7 +538,7 @@ printf "Checking the dependencies ... " >&1
 
 ###### PYTHON LIBRARIES ######
 
-PYTHON_D=( os sys pyfaidx Bio csv numpy collections pandas __future__ )
+PYTHON_D=( os sys pyfaidx Bio csv numpy bisect collections )
 
 for lib in "${PYTHON_D[@]}"
 do
