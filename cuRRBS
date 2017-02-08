@@ -1148,8 +1148,10 @@ then
 
          echo 
          echo "There are no individual enzymes or enzyme combinations to report and no output file will be created."
-         echo "Please rerun the software with a lower C_Score value (or a higher C_NF/1000 value) in a new output directory."
+         echo "Please rerun the software with a lower C_Score value (or a higher C_NF/1000 value)."
+         echo "The old output directory will be removed."
          echo
+         rm -r $OUTDIR
          exit
       else
          SNE1="$OUTDIR/SNE_files/SNE_*.csv_final_1_enz_heu"
