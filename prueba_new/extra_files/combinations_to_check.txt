@@ -1,6 +1,0 @@
-Ama87I,BsiSI
-BsiSI,BstDSI
-BsaWI,BsiSI
-Ama87I,BsaWI
-BsaWI,BstDSI
-Ama87I,BstDSI
