@@ -97,8 +97,8 @@ for no, enzyme_file_line in enumerate(enzyme_file_lines):
     fsd_file.write('>' + '_'.join(map(str,chosen_enzymes)) + '\n')
     writer = csv.writer(fsd_file)
     #for key, value in counts_fragment_sizes.items():
-    fg_min = 20
-    fg_max = 800
+    fg_min = 0
+    fg_max = 1000
     for no, count in enumerate(counts_fragment_sizes[fg_min:fg_max+1]):
         writer.writerow([fg_min+no, count])
     fsd_file.close()
