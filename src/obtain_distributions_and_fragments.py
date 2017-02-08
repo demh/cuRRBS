@@ -138,8 +138,6 @@ import numpy
 import bisect
 import collections
 
-sys.stdout.flush()
-
 # working directory
 os.chdir(str(sys.argv[4]))
 
@@ -176,6 +174,7 @@ individual_enzymes = set([enzyme for line in enzyme_file_lines
 def read_precomputed(individual_enzymes):
     all_data = {}
     for enzyme in individual_enzymes:
+        sys.stdout.flush()
         print("        Reading precomputed file for {} ...".format(enzyme))
         precomputed_filename = index_files_path + enzyme + '_pre_computed.txt'
         all_data[enzyme] = []
@@ -195,6 +194,7 @@ def read_precomputed(individual_enzymes):
 chr_names, all_enzyme_restriction_sites = read_precomputed(individual_enzymes)
 
 for no, enzyme_file_line in enumerate(enzyme_file_lines):
+    sys.stdout.flush()
     print('        Processing enzyme (or enzyme combination) {}/{} ...'.format(
         no+1, len(enzyme_file_lines)))        
     chosen_enzymes =  enzyme_file_line.split(',')
