@@ -622,6 +622,8 @@ fi
 printf "OK\n" >&1
 
 
+OUTDIR=$(absolute_path $OUTDIR) # Make sure the output directory is an absolute path
+
 
 ###### 0.2. Implementation of a CHECKPOINT file ######
 

@@ -1,0 +1,16 @@
+output_path /Users/dem44/Desktop/methylation_clock/optimize_RRBS/cuRRBS/prueba_new
+pre_computed_files_path /Users/dem44/Desktop/run_RRBS/pre_computed_files/
+enzymes_to_check_path /Users/dem44/Desktop/run_RRBS/enzymes_to_check_cut_2.txt
+sites_annotation_path /Users/dem44/Desktop/methylation_clock/optimize_RRBS/cuRRBS/utils/human_clock_sites_annotation.csv
+read_length 75
+adapters_length 130
+C_Score_constant 0.05
+C_NF_1000_constant 1
+heuristic_constant 2
+experimental_error 20
+max_number_reported_enzymes 30
+methylation_sensitivity_families_annotation_path /Users/dem44/Desktop/methylation_clock/optimize_RRBS/cuRRBS/utils/isoschizomers_CpG_annotation.csv
+include_info_sites_interest N
+size_range_mode d
+search_mode h
+software_path /Users/dem44/Desktop/methylation_clock/optimize_RRBS/cuRRBS
