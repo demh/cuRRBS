@@ -206,7 +206,7 @@ for no, enzyme_file_line in enumerate(enzyme_file_lines):
     
     fragments_sites_dict = collections.OrderedDict()
     for no_chr, chromosome in enumerate(chr_names):
-        chr_restriction_sites = numpy.sort(numpy.concatenate(
+        chr_restriction_sites = numpy.unique(numpy.concatenate(
             [all_enzyme_restriction_sites[enzyme][no_chr] for
              enzyme in chosen_enzymes]))
         fragment_sizes = numpy.diff(chr_restriction_sites)
