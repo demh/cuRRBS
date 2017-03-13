@@ -183,11 +183,11 @@ def read_precomputed(individual_enzymes):
         chr_names = []
         with open(precomputed_filename, 'r') as precomputed_file:
             precomputed_file_str = precomputed_file.read().replace('\n',' ')
-            string_by_chr = precomputed_file_str.split('>chr')
+            string_by_chr = precomputed_file_str.split('>')
             for ls in string_by_chr:
                 if ls:
                     ls_list = ls.split()
-                    chr_name = "chr{}".format(ls_list[0])
+                    chr_name = "{}".format(ls_list[0])
                     all_data[enzyme].append(
                         numpy.array(ls_list[1:], dtype=int))
                     chr_names.append(chr_name)
