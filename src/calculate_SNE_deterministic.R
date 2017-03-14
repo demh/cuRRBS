@@ -81,7 +81,7 @@ option_list <-  list(
               metavar='integer'),
   
   make_option(c('-t', '--NF_thresholds'), type='character', default='1', 
-              help="Integer (named NT) or vector (e.g. '0.5,1,40') used to calculate the different NF/1000 thresholds \
+              help="Float (named NT) or vector (e.g. '0.5,1,40') used to calculate the different NF/1000 thresholds \
                 which will filter the final output. NT takes values in the interval (0, +Inf). \
                 Only those size ranges with NF/1000 <= NT * ref_NF/1000 are kept.  \ 
                 By default, ref_NF/1000 is the NF/1000 value for MspI in a theoretical size range of 20-800 bp \
@@ -89,7 +89,7 @@ option_list <-  list(
               metavar='character'),
   
   make_option(c('-x', '--Score_thresholds'), type='character', default='0.1', 
-              help="Integer (named ST) or vector e.g. ('0.2,0.5,0.8') used to calculate the different Score thresholds \
+              help="Float (named ST) or vector e.g. ('0.2,0.5,0.8') used to calculate the different Score thresholds \
                 which will filter the final output. ST takes values in the interval (0,1]. 
                 Only those size ranges with Score > ST * max_score are kept (max_score is the Score that would be \ 
                 obtained if all the sites of interest were captured in the sequencing). DEFAULT='0.1'",
@@ -188,6 +188,7 @@ output_ID <- as.character(opt$output_ID); # ID at the end of the file to avoid p
 fld_file_path <- as.character(opt$fld_file);
 fragments_file_path <- as.character(opt$fragments_file);
 sites_annotation <- read.table(as.character(opt$annotation_file), sep=',', header=T);
+sites_annotation[,1] <- as.character(sites_annotation[,1]); 
 
 # Calculate absolute Score thresholds.
 
@@ -234,7 +235,9 @@ expand_fragments_df <- function(input_fragments_df, sann){
   
   # Merge the information from the expanded input with the annotation information.
   
-  merged_expanded <- full_join(as.data.frame(expanded_input), as.data.frame(sann), by='Site_ID');
+  expanded_input <- as.data.frame(expanded_input);
+  expanded_input[,1] <- as.character(expanded_input[,1]);
+  merged_expanded <- full_join(expanded_input, as.data.frame(sann), by='Site_ID');
   merged_expanded <- arrange(merged_expanded, Site_ID);
   
   # Create the final dataframe.
