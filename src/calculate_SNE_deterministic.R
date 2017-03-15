@@ -222,6 +222,9 @@ expand_fragments_df <- function(input_fragments_df, sann){
   # Expand the input dataframe for those rows with several sites of interest.
   
   expanded_input <- input_fragments_df[!grepl('_', input_fragments_df[,1]),]; # Rows with only one site
+  if(length(expanded_input) <= 3){ 
+    expanded_input <- matrix(expanded_input, byrow=T, ncol=3);
+  }
   colnames(expanded_input) <- c('Site_ID', 'Fragment_start', 'Fragment_length');
   
   for(multi_row in grep('_', input_fragments_df[,1])){
