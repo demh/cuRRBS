@@ -271,7 +271,9 @@ expand_fragments_df <- function(input_fragments_df, sann){
   
   # Merge the information from the expanded input with the annotation information.
   
-  merged_expanded <- full_join(as.data.frame(expanded_input), as.data.frame(sann), by='Site_ID');
+  expanded_input <- as.data.frame(expanded_input);
+  expanded_input[,1] <- as.character(expanded_input[,1]);
+  merged_expanded <- full_join(expanded_input, as.data.frame(sann), by='Site_ID');
   merged_expanded <- arrange(merged_expanded, Site_ID);
   
   # Create the final dataframe.
@@ -557,6 +559,8 @@ calculate_robustness <- function(fld_info, fragments_info, optimal_sr, rl, exp_e
 ## Sites annotation
 
 sites_ann <- read.csv(sites_annotation_path);
+sites_ann[,1] <- as.character(sites_ann[,1]); 
+
 
 ## SNE files and df files
 
