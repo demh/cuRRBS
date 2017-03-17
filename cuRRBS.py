@@ -23,8 +23,8 @@
 #
 # USAGE (see help page): python cuRRBS.py -h
 
-__version_info__ = ('2017','03','10')
-__version__ = '_'.join(__version_info__)
+__version_info__ = ('1','01')
+__version__ = '.'.join(__version_info__)
 
 try:
     import sys
@@ -62,7 +62,7 @@ Copyright (C) 2016,2017 D.E. Martin-Herranz, A.J.M. Ribeiro, T.M. Stubbs.
 cuRRBS comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to 
 redistribute it under the conditions in the GPU GPL-3.0 license.
 
-version ({0})
+cuRRBS v{0}
 
 #########################################################################################
 """
@@ -71,9 +71,9 @@ version ({0})
 NO_RESULTS_MESSAGE = ("""
 #########################################################################################
 
-No individual enzymes or enzyme combinations were found that satisfy 
-the used settings. No output file will be created. Please rerun the 
-software with a lower C_Score value (or a higher C_NF/1000 value).
+No individual enzymes or enzyme combinations were found that satisfy the used settings. 
+No output file will be created. 
+Please rerun the software with a lower C_Score value (or a higher C_NF/1000 value).
 
 """)
 
@@ -158,9 +158,13 @@ def check_range(parser, arg, lim_min=None, lim_max=None, ttype=int):
 
 parser = ThrowingArgumentParser(
     description=DESCRIPTION,
-    formatter_class=argparse.RawDescriptionHelpFormatter
+    formatter_class=argparse.RawDescriptionHelpFormatter,
 )
+
 #parser = argparse.ArgumentParser(description="")
+
+required = parser.add_argument_group("required arguments")
+parser._action_groups = [parser._action_groups[2], parser._action_groups[1]]
 
 parser.add_argument(
     '-V', '--version', 
@@ -169,37 +173,37 @@ parser.add_argument(
     format(prog="%(prog)", version=__version__)
 )
 
-parser.add_argument(
-    "-o", metavar="Output",
+required.add_argument(
+    "-o", metavar="Output folder",
     required=True,
-    help="path to the main output folder.",
+    help="path to the main output folder",
 #    type=lambda x: folder_already_exists(parser, x),
 )
 
-parser.add_argument(
-    "-p", metavar="Precomputed",
+required.add_argument(
+    "-p", metavar="Pre-computed files",
     required=True,
-    help="path to the folder that contains the pre-computed files.",
+    help="path to the folder that contains the pre-computed files",
     type=lambda x: file_exists(parser, x),
 )
 
-parser.add_argument(
-    "-e", metavar="Enzymes", 
+required.add_argument(
+    "-e", metavar="Enzymes to check", 
     required=True,
     help=("path to the text file which contains the enzymes to check in the "
-          "pipeline (e.g.enzymes_to_check.txt)."),
+          "pipeline (e.g.enzymes_to_check.txt)"),
     type=lambda x: file_exists(parser, x),
 )
 
-parser.add_argument(
-    "-a", metavar="Annotation sites",
+required.add_argument(
+    "-a", metavar="Annotation for sites",
     required=True,
     help=("path to the CSV file which contains the annotation for the "
-          "sites of interest (e.g. human_clock_sites_annotation.csv)."),
+          "sites of interest (e.g. human_clock_sites_annotation.csv)"),
     type=lambda x: file_exists(parser, x),
 )
 
-parser.add_argument(
+required.add_argument(
     "-r", metavar="Read length", 
     type=lambda x: check_range(parser, x, 30, 300),
     required=True,
@@ -207,53 +211,45 @@ parser.add_argument(
           "sequencing for the customized RRBS experiment. This determines "
           "whether a CpG is 'seen' in a size-selected fragment after the "
           "sequencing (i.e. only if it is close to one of the ends of the "
-          "fragment). RANGE:30-300."),
+          "fragment). RANGE: 30-300"),
 )
 
-parser.add_argument(
+required.add_argument(
     "-s", metavar="adapters Size", 
     type=lambda x: check_range(parser, x, 0, None ),
     required=True,
     help=("total size (in bp) of the adapters used for the customized RRBS "
           "experiment. This will be used to calculate the experimental "
           "size range. e.g. in  the original RRBS protocol (Gu et al., "
-          "Nature Methods, 2011) this value is 120 for single-end adapters."),
+          "Nature Methods, 2011) this value is 120 for single-end adapters"),
 )
 
-parser.add_argument(
-    "-c", metavar="C score constant", 
+required.add_argument(
+    "-c", metavar="C_Score constant", 
     type=lambda x: check_range(parser, x, 0, 1, ttype=float),
     required=True,
     help=("value for the C_Score constant. It must be a number (integer or "
           "float) in the interval (0,1]. Only those enzyme combinations "
-          "with a Score > C_Score * max_Score are reported."),
+          "with a Score > C_Score * max_Score are reported"),
 )
 
 parser.add_argument(
-    "-k", 
+    "-k", metavar="C_NF/1000 constant", 
     default=1,
     type=lambda x: check_range(parser, x, 0, None, float),
     help="value for the C_NF/1000 constant. It must be a number (integer or "
          "float) larger than 0. Only those enzyme combinations "
-         "with a NF/1000 <= C_NF/1000 * ref_NF/1000 are reported. DEFAULT: 1"
-         "RANGE: >0",
+         "with a NF/1000 <= C_NF/1000 * ref_NF/1000 are reported. DEFAULT: 1. RANGE: >0"
 )
 
 parser.add_argument(
-    "-u", 
-    default=2,
-    type=int,
-    help="value for the constant used in 'heuristic' mode. DEFAULT: 2",
-)
-
-parser.add_argument(
-    "-d", metavar="size step", 
+    "-d", metavar="experimental error", 
     default=10,
     type=lambda x: check_range(parser, x, 5, 500),
     help="experimental error assumed when performing the size range selection "
          "(in bp). When this value is increased, less size ranges are tested "
          "and the software is faster, but it is also more likely to miss a "
-    "better size range than the one reported. DEFAULT:10 RANGE:5-500"
+    "better size range than the one reported. DEFAULT: 10. RANGE: 5-500"
 )
 
 parser.add_argument(
@@ -267,8 +263,8 @@ parser.add_argument(
 
 parser.add_argument(
     "-m", metavar="isoschizomers file",
-    default="utils/isoschizomers_CpG_annotation.csv",
-    help="path to the annotation file containing the information regarding "
+    default=os.path.dirname(os.path.realpath(__file__)) + "/utils/isoschizomers_CpG_annotation.csv",
+    help="path to the file containing the information regarding "
          "the different isoschizomer families and methylation sensitivity of "
          "the different enzymes. "
          "DEFAULT: path/to/cuRRBS/utils/isoschizomers_CpG_annotation.csv",
@@ -279,8 +275,8 @@ parser.add_argument(
 parser.add_argument(
     "-i",
     action="store_true",
-    help="include the number of sites of interest that will theoretically "
-         "be sequenced and their respective IDs in the final output file.",
+    help="include the IDs of the sites of interest that will theoretically "
+         "be sequenced in the final output file",
 )
 
 if len(sys.argv)==1:
@@ -481,7 +477,7 @@ def main():
     except OSError:
         print("Cannot create output folder: {}".format(output_folder_name))
     
-    log_file_name = "{}/output.log".format(output_folder_name)
+    log_file_name = "{}/LOG".format(output_folder_name)
     logger = MyLogger(sys.stdout, log_file_name)
     sys.stdout = logger
 
@@ -606,7 +602,7 @@ def main():
 
 
     if output_lines:
-        output_csv_name = "{}/result.csv".format(output_folder_name)
+        output_csv_name = "{}/final_cuRRBS_output.csv".format(output_folder_name)
         with open(output_csv_name, 'w') as output_csv:
             output_csv.write(
               "Enzyme(s),Experimental_size_range,Theoretical_size_range,"
