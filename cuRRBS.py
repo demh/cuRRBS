@@ -1,5 +1,28 @@
 # -*- coding: utf-8 -*-
 
+###########################################################################################
+#########      cuRRBS: customized Reduced Representation Bisulfite Sequencing     #########
+###########################################################################################
+#
+# Created by Daniel E. Martin-Herranz, Antonio J.M. Ribeiro and Thomas M. Stubbs.
+#
+# Copyright (C) 2016,2017 D.E. Martin-Herranz, A.J.M. Ribeiro, T.M. Stubbs.
+#
+# This file is part of cuRRBS.
+#
+# cuRRBS is free software: you can redistribute it and/or modify it under the terms 
+# of the GNU General Public License as published by the Free Software Foundation, either 
+# version 3 of the License, or (at your option) any later version.
+#
+# cuRRBS is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+# without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+# See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with cuRRBS. 
+# If not, see <http://www.gnu.org/licenses/>.
+#
+# USAGE (see help page): python cuRRBS.py -h
+
 __version_info__ = ('2017','03','10')
 __version__ = '_'.join(__version_info__)
 
@@ -28,44 +51,50 @@ except ImportError, e:
 
 DESCRIPTION = ("""
 
-########################################################################
-###  cuRRBS: customized Reduced Representation Bisulfite Sequencing  ###
-########################################################################
+##########################################################################################
+########      cuRRBS: customized Reduced Representation Bisulfite Sequencing     #########
+##########################################################################################
 
-Created by Daniel E. Martin-Herranz and Thomas Stubbs.
+Created by Daniel E. Martin-Herranz, Antonio J.M. Ribeiro and Thomas M. Stubbs.
 
-Copyright (C) 2016,2017 D.E. Martin-Herranz, T. Stubbs.
+Copyright (C) 2016,2017 D.E. Martin-Herranz, A.J.M. Ribeiro, T.M. Stubbs.
 
-This program comes with ABSOLUTELY NO WARRANTY. This is free software,
-and you are welcome to redistribute it under the conditions in the GPU 
-GPL-3.0 license.
+cuRRBS comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to 
+redistribute it under the conditions in the GPU GPL-3.0 license.
 
 version ({0})
 
-########################################################################
+#########################################################################################
 """
 ).format(__version__)
 
 NO_RESULTS_MESSAGE = ("""
-########################################################################
+#########################################################################################
 
 No individual enzymes or enzyme combinations were found that satisfy 
 the used settings. No output file will be created. Please rerun the 
 software with a lower C_Score value (or a higher C_NF/1000 value).
+
 """)
 
 SUCCESSFUL_RUN_MESSAGE = ("""
-########################################################################
+#########################################################################################
 
 cuRRBS finished its execution successfully!
 
 The output can be found in the following file:
     {}
 
-If cuRRBS was useful for your research, please cite our paper and follow
-us on https://github.com/demh
+#########################################################################################
 
-TODO INTRODUCE REFERENCE HERE
+If cuRRBS was useful for your research, please cite our paper and follow us on:
+
+	 https://github.com/demh
+	 https://github.com/jose-mr
+	 https://github.com/t0mstubbst
+
+#########################################################################################
+
 """
 )
 
