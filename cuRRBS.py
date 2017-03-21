@@ -287,7 +287,7 @@ args = parser.parse_args()
 
 # make options
 FG_MIN = 20
-FG_MAX = 800
+FG_MAX = 1000
 NO_THREADS = 1
 MAX_COMBS = 2
 REF_NF_1000 = 1343.468 # NF/1000 value for MspI in reference protocol 
