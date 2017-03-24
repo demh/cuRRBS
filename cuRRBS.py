@@ -574,6 +574,9 @@ def main():
     sorted_results = sorted(enzyme_mixes_dict.items(), key=lambda e: len(e[0]))
     sorted_results = sorted(enzyme_mixes_dict.items(), key=lambda e: e[1][5])
     output_lines = []
+    sites_id_str = ""
+    if args.i:
+        sites_id_str=",Sites_IDs"
     for result in sorted_results[:args.t]:
         output = ""
         enzyme_mix = result[0]
@@ -595,9 +598,9 @@ def main():
                     len(sites_found),
 
             ))
-        if args.i:
-            output = "{0},{1}".format(output, ";".join(sites_found))
         if output:
+            if args.i:
+                output = "{0},{1}".format(output, ";".join(sites_found))
             output_lines.append(output)
 
 
@@ -607,8 +610,8 @@ def main():
             output_csv.write(
               "Enzyme(s),Experimental_size_range,Theoretical_size_range,"
               "Score,%_max_Score,NF/1000,Cost_Reduction_Factor,"
-              "Enrichment_Value,Robustness,C_Score|C_NF/1000,Number_of_sites\n"
-            )
+              "Enrichment_Value,Robustness,C_Score|C_NF/1000,Number_of_sites{}\n"
+            .format(sites_id_str))
             for line in output_lines:
                 output_csv.write("{}\n".format(line))
 
