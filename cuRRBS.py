@@ -408,13 +408,16 @@ def find_best_ev(scores_all, fg_counts_all, no_sites, max_score):
     diff_sum = 0
     if score:
         for x, y in itertools.product([-1, 0, 1], repeat=2):
-            try:
-                error_score = sum(scores[start+x:end+y])+scores_all[args.d*(end+y)]
-                error_ev = -math.log10(error_score/(sum(
-                    fg_counts[start+x:end+y])+fg_counts_all[args.d*(
-                        end+y)])*no_sites/max_score)
-            except (ValueError, IndexError):
+            if start == 0:
                 error_ev = ev
+            else:
+                try:
+                    error_score = sum(scores[start+x:end+y])+scores_all[args.d*(end+y)]
+                    error_ev = -math.log10(error_score/(sum(
+                        fg_counts[start+x:end+y])+fg_counts_all[args.d*(
+                            end+y)])*no_sites/max_score)
+                except (ValueError, IndexError):
+                    error_ev = ev
                 
             diff_sum += abs(ev-error_ev)
         omega = diff_sum/ev
