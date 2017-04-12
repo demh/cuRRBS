@@ -244,12 +244,12 @@ parser.add_argument(
 
 parser.add_argument(
     "-d", metavar="experimental error", 
-    default=10,
+    default=20,
     type=lambda x: check_range(parser, x, 5, 500),
     help="experimental error assumed when performing the size range selection "
          "(in bp). When this value is increased, less size ranges are tested "
          "and the software is faster, but it is also more likely to miss a "
-    "better size range than the one reported. DEFAULT: 10. RANGE: 5-500"
+    "better size range than the one reported. DEFAULT: 20. RANGE: 5-500"
 )
 
 parser.add_argument(
