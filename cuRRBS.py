@@ -239,7 +239,7 @@ required.add_argument(
     type=float,
     help=("size of the genome used to generate the pre-computed files (in "
 	 "Mega-basepairs). The values for the genomes already available "
-         "can be found in utils/genome_sizes.txt"),
+         "can be found in utils/genome_sizes.txt (e.g. for human hg38: 3088.286401)"),
 )
 
 
