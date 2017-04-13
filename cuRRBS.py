@@ -233,7 +233,7 @@ required.add_argument(
           "with a Score > C_Score * max_Score are reported"),
 )
 
-parser.add_argument(
+required.add_argument(
     "-g", metavar="Genome size", 
     required=True,
     type=float,
