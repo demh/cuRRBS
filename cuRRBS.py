@@ -23,7 +23,7 @@
 #
 # USAGE (see help page): python cuRRBS.py -h
 
-__version_info__ = ('1','01')
+__version_info__ = ('1','02')
 __version__ = '.'.join(__version_info__)
 
 try:
@@ -234,6 +234,14 @@ required.add_argument(
 )
 
 parser.add_argument(
+    "-g", metavar="genome size Mb", 
+    required=True,
+    type=float,
+    help="Genome size in Mega-basepairs."
+)
+
+
+parser.add_argument(
     "-k", metavar="C_NF/1000 constant", 
     default=1,
     type=lambda x: check_range(parser, x, 0, None, float),
@@ -290,7 +298,7 @@ FG_MIN = 20
 FG_MAX = 1000
 NO_THREADS = 1
 MAX_COMBS = 2
-REF_NF_1000 = 1343.468 # NF/1000 value for MspI in reference protocol 
+REF_NF_1000 = args.g *1000./400. # NF/1000 value for MspI in reference protocol 
 START_TIME = time.time()
 # working directory
 
