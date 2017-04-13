@@ -234,20 +234,24 @@ required.add_argument(
 )
 
 parser.add_argument(
-    "-g", metavar="genome size Mb", 
+    "-g", metavar="Genome size", 
     required=True,
     type=float,
-    help="Genome size in Mega-basepairs."
+    help="size of the genome used to generate the pre-computed files (in "
+	 "Mega-basepairs). The values for the genomes already available "
+         "can be found in utils/genome_sizes.txt"),
 )
 
 
 parser.add_argument(
     "-k", metavar="C_NF/1000 constant", 
-    default=1,
-    type=lambda x: check_range(parser, x, 0, None, float),
+    default=0.1,
+    type=lambda x: check_range(parser, x, 0, 1, ttype=float),
     help="value for the C_NF/1000 constant. It must be a number (integer or "
-         "float) larger than 0. Only those enzyme combinations "
-         "with a NF/1000 <= C_NF/1000 * ref_NF/1000 are reported. DEFAULT: 1. RANGE: >0"
+         "float) in the interval (0,1]. Only those enzyme combinations "
+         "with a NF/1000 <= C_NF/1000 * ref_NF/1000 are reported, where ref_NF/1000"
+         "is the NF/1000 that would be generated in a whole-genome "
+         "bisulfite-sequencing (WGBS) experiment. DEFAULT: 0.1"
 )
 
 parser.add_argument(
@@ -298,7 +302,7 @@ FG_MIN = 20
 FG_MAX = 1000
 NO_THREADS = 1
 MAX_COMBS = 2
-REF_NF_1000 = args.g *1000./400. # NF/1000 value for MspI in reference protocol 
+REF_NF_1000 = args.g *1000./250. # We assume a fragment size of 250 bp for the WGBS fragmentation (Illumina protocol) 
 START_TIME = time.time()
 # working directory
 
@@ -404,7 +408,7 @@ def find_best_ev(scores_all, fg_counts_all, no_sites, max_score):
         for y in range(x+1, len(scores)):
             this_score = sum(scores[x:y])+scores_all[args.d*y]
             this_nf = (sum(fg_counts[x:y])+fg_counts_all[args.d*y])
-            if this_score/max_score > args.c and (this_nf/1000.)/REF_NF_1000 < args.k:
+            if this_score/max_score > args.c and (this_nf/1000.)/REF_NF_1000 <= args.k:
                 try:
                     this_ev = -math.log10(this_score/this_nf*no_sites/max_score)
                 except ValueError:
