@@ -191,7 +191,7 @@ required.add_argument(
     "-e", metavar="Enzymes to check", 
     required=True,
     help=("path to the text file which contains the enzymes to check in the "
-          "pipeline (e.g.enzymes_to_check.txt)"),
+          "pipeline (e.g. enzymes_to_check_CpG.txt)"),
     type=lambda x: file_exists(parser, x),
 )
 
