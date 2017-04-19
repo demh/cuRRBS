@@ -245,13 +245,13 @@ required.add_argument(
 
 parser.add_argument(
     "-k", metavar="C_NF/1000 constant", 
-    default=0.1,
+    default=0.2,
     type=lambda x: check_range(parser, x, 0, 1, ttype=float),
     help="value for the C_NF/1000 constant. It must be a number (integer or "
          "float) in the interval (0,1]. Only those enzyme combinations "
          "with a NF/1000 <= C_NF/1000 * ref_NF/1000 are reported, where ref_NF/1000"
          "is the NF/1000 that would be generated in a whole-genome "
-         "bisulfite-sequencing (WGBS) experiment. DEFAULT: 0.1"
+         "bisulfite-sequencing (WGBS) experiment. DEFAULT: 0.2"
 )
 
 parser.add_argument(
@@ -302,7 +302,7 @@ FG_MIN = 20
 FG_MAX = 1000
 NO_THREADS = 1
 MAX_COMBS = 2
-REF_NF_1000 = args.g *1000./250. # We assume a fragment size of 250 bp for the WGBS fragmentation (Illumina protocol) 
+REF_NF_1000 = args.g *1000./75. # We calculate REF_NF_1000 = (genome_size / read_length) / 1000, where read_length = 75 bp
 START_TIME = time.time()
 # working directory
 
