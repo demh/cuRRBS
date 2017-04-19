@@ -420,7 +420,7 @@ def find_best_ev(scores_all, fg_counts_all, no_sites, max_score):
     diff_sum = 0
     if score:
         for x, y in itertools.product([-1, 0, 1], repeat=2):
-            if start == 0:
+            if (start == 0 and x == -1):
                 error_ev = ev
             else:
                 try:
@@ -432,8 +432,11 @@ def find_best_ev(scores_all, fg_counts_all, no_sites, max_score):
                     error_ev = ev
                 
             diff_sum += abs(ev-error_ev)
-        omega = diff_sum/ev
-        robustness = math.exp(-omega) 
+        if diff_sum:
+            omega = diff_sum/ev
+            robustness = math.exp(-omega) 
+        else:
+            robustness = "NA"
     return (start*args.d, end*args.d, ev, score, nf, robustness)
 
 def find_best_cut(enzyme_mixes, sites, restriction_sites_dict, chr_names, enzyme_mixes_dict):
