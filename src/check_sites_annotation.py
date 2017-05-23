@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 ###########################################################################################
-#########      cuRRBS: customized Reduced Representation Bisulfite Sequencing     #########
+#########      cuRRBS: customised Reduced Representation Bisulfite Sequencing     #########
 ###########################################################################################
 #
 # Created by Daniel E. Martin-Herranz, Antonio J.M. Ribeiro and Thomas M. Stubbs.
@@ -77,7 +77,7 @@ path_to_genome = str(sys.argv[2])  # It should be the absolute path
 genome = Fasta(path_to_genome, sequence_always_upper=True, as_raw=True)
 
 
-### Initialize useful variables ###
+### Initialise useful variables ###
 
 total_sites = 0
 wrong_site_IDs = []

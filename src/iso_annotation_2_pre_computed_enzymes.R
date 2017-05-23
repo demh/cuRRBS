@@ -1,5 +1,5 @@
 ###########################################################################################
-#########      cuRRBS: customized Reduced Representation Bisulfite Sequencing     #########
+#########      cuRRBS: customised Reduced Representation Bisulfite Sequencing     #########
 ###########################################################################################
 #
 # Created by Daniel E. Martin-Herranz, Antonio J.M. Ribeiro and Thomas M. Stubbs.

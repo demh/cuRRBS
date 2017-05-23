@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-
 ###########################################################################################
-#########      cuRRBS: customized Reduced Representation Bisulfite Sequencing     #########
+#########      cuRRBS: customised Reduced Representation Bisulfite Sequencing     #########
 ###########################################################################################
 #
 # Created by Daniel E. Martin-Herranz, Antonio J.M. Ribeiro and Thomas M. Stubbs.
@@ -52,7 +51,7 @@ except ImportError, e:
 DESCRIPTION = ("""
 
 ##########################################################################################
-########      cuRRBS: customized Reduced Representation Bisulfite Sequencing     #########
+########      cuRRBS: customised Reduced Representation Bisulfite Sequencing     #########
 ##########################################################################################
 
 Created by Daniel E. Martin-Herranz, Antonio J.M. Ribeiro and Thomas M. Stubbs.
@@ -207,11 +206,11 @@ required.add_argument(
     "-r", metavar="Read length", 
     type=lambda x: check_range(parser, x, 30, 300),
     required=True,
-    help=("read length (in bp) that will be used during the Illumina "
-          "sequencing for the customized RRBS experiment. This determines "
-          "whether a CpG is 'seen' in a size-selected fragment after the "
-          "sequencing (i.e. only if it is close to one of the ends of the "
-          "fragment). RANGE: 30-300"),
+    help=("read length (in bp) that will be used during the sequencing"
+          "for the customized RRBS experiment. This determines whether"
+          "a CpG is 'seen' in a size-selected fragment after the sequencing"
+          "(i.e. only if it is close to one of the ends of the fragment)."
+          "RANGE: 30-300"),
 )
 
 required.add_argument(
@@ -228,8 +227,8 @@ required.add_argument(
     "-c", metavar="C_Score constant", 
     type=lambda x: check_range(parser, x, 0, 1, ttype=float),
     required=True,
-    help=("value for the C_Score constant. It must be a number (integer or "
-          "float) in the interval (0,1]. Only those enzyme combinations "
+    help=("value for the C_Score constant (Score threshold). It must be a number "
+          "(integer or float) in the interval (0,1]. Only those enzyme combinations "
           "with a Score > C_Score * max_Score are reported"),
 )
 
@@ -247,8 +246,8 @@ parser.add_argument(
     "-k", metavar="C_NF/1000 constant", 
     default=0.2,
     type=lambda x: check_range(parser, x, 0, 1, ttype=float),
-    help="value for the C_NF/1000 constant. It must be a number (integer or "
-         "float) in the interval (0,1]. Only those enzyme combinations "
+    help="value for the C_NF/1000 constant (NF threshold). It must be a number "
+         "(integer or float) in the interval (0,1]. Only those enzyme combinations "
          "with a NF/1000 <= C_NF/1000 * ref_NF/1000 are reported, where ref_NF/1000"
          "is the NF/1000 that would be generated in a whole-genome "
          "bisulfite-sequencing (WGBS) experiment. DEFAULT: 0.2"
@@ -258,10 +257,10 @@ parser.add_argument(
     "-d", metavar="experimental error", 
     default=20,
     type=lambda x: check_range(parser, x, 5, 500),
-    help="experimental error assumed when performing the size range selection "
+    help="experimental error assumed when performing the size selection step "
          "(in bp). When this value is increased, less size ranges are tested "
          "and the software is faster, but it is also more likely to miss a "
-    "better size range than the one reported. DEFAULT: 20. RANGE: 5-500"
+    "more optimal size range than the one reported. DEFAULT: 20. RANGE: 5-500"
 )
 
 parser.add_argument(
@@ -274,11 +273,11 @@ parser.add_argument(
 
 
 parser.add_argument(
-    "-m", metavar="isoschizomers file",
+    "-m", metavar="isoschizomers annotation file",
     default=os.path.dirname(os.path.realpath(__file__)) + "/utils/isoschizomers_CpG_annotation.csv",
     help="path to the file containing the information regarding "
          "the different isoschizomer families and methylation sensitivity of "
-         "the different enzymes. "
+         "the restriction enzymes. "
          "DEFAULT: path/to/cuRRBS/utils/isoschizomers_CpG_annotation.csv",
     type=lambda x: file_exists(parser, x),
 
@@ -302,7 +301,7 @@ FG_MIN = 20
 FG_MAX = 1000
 NO_THREADS = 1
 MAX_COMBS = 2
-REF_NF_1000 = args.g *1000./75. # We calculate REF_NF_1000 = (genome_size / read_length) / 1000, where read_length = 75 bp
+REF_NF_1000 = args.g *1000./float(args.r) # We calculate REF_NF_1000 = (genome_size / read_length) / 1000
 START_TIME = time.time()
 # working directory
 
