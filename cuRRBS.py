@@ -299,7 +299,7 @@ args = parser.parse_args()
 # make options
 FG_MIN = 20
 FG_MAX = 1000
-NO_THREADS = 1
+NO_THREADS = 4
 MAX_COMBS = 2
 REF_NF_1000 = args.g *1000./float(args.r) # We calculate REF_NF_1000 = (genome_size / read_length) / 1000
 START_TIME = time.time()
