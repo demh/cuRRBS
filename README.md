@@ -1,5 +1,4 @@
-# cuRRBS
-customised Reduced Representation Bisulfite Sequencing
+# cuRRBS: ##customised Reduced Representation Bisulfite Sequencing
 
 ## Getting started
 
