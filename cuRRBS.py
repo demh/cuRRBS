@@ -190,7 +190,7 @@ required.add_argument(
     "-e", metavar="Enzymes to check", 
     required=True,
     help=("path to the text file which contains the enzymes to check in the "
-          "pipeline (e.g. enzymes_to_check_CpG.txt)"),
+          "pipeline (e.g. utils/enzymes_to_check_CpG.txt)"),
     type=lambda x: file_exists(parser, x),
 )
 
@@ -198,7 +198,7 @@ required.add_argument(
     "-a", metavar="Annotation for sites",
     required=True,
     help=("path to the CSV file which contains the annotation for the "
-          "sites of interest (e.g. human_clock_sites_annotation.csv)"),
+          "sites of interest (e.g. examples/epigenetic_clock_human_hg38_sites_annotation.csv)"),
     type=lambda x: file_exists(parser, x),
 )
 
