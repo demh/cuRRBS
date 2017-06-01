@@ -25,7 +25,7 @@ git clone https://github.com/demh/cuRRBS.git
 ## Preparing cuRRBS input files
 
 cuRRBS requires the following files as input:
-a
+
 **1. Isoschizomer annotation file.** 
 
 Restriction enzymes that cut the genome in the same way (i.e. generate the same fragment length distribution) are grouped in isoschizomer families. Furthermore, this file also contains information regarding the methylation-sensitivity (in a concrete genomic context) of the commercially-available restriction enzymes. These files can be found in utils/isoschizomers_*_annotation.csv but the user can also create his own file. By default, cuRRBS uses isoschizomers_CpG_annotation.csv, which should be used when considering only methylation-sensitivity in CpG contexts (i.e. for most vertebrate genomes). 
