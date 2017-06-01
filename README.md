@@ -1,6 +1,7 @@
 # cuRRBS
 
 Created by Daniel E. Martin-Herranz, Antonio J.M. Ribeiro and Thomas M. Stubbs.
+
 Copyright (C) 2016,2017 D.E. Martin-Herranz, A.J.M. Ribeiro, T.M. Stubbs.
 
 ## What is cuRRBS?
