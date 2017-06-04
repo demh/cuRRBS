@@ -48,11 +48,21 @@ They contain information for the *in silico* digestions of a genome with certain
 
 **3. Enzymes to check.** 
 
-This file contains the isoschizomer families that should be consider by cuRRBS (i.e. those that contain at least one methylation-insensitive member). When considering only CpG methylation-insensitive enzymes, the file utils/enzymes_to_check_CpG.txt should be used.
+This file contains the isoschizomer families that should be considered by cuRRBS (i.e. those that contain at least one methylation-insensitive member). When working with CpG methylation-insensitive enzymes, the file utils/enzymes_to_check_CpG.txt should be used.
 
 **4. Sites annotation file.** 
 
- 
+This file stores the information regarding the sites of interest (i.e. genomic coordinates) that the user wants to enrich for with the new customised protocol. This file needs to be created from scratch by the user, since it will be different depending on the sites that need to be targeted. The file is provided with a CSV (comma-separated values) format, with each row containing the information for a site of interest and the following columns:  
+
+* Site_ID: unique ID for the current site of interest. It can not contain the '_' or the ',' characters.
+
+* Chr: chromosome where the current site of interest is located. The same nomenclature should be used as in the case of the pre-computed files.
+
+* Coordinate: 1-based genomic coordinate where the current site of interest is located. Please make sure that the coordinates are based on the same genome assembly as the one used to generate the pre-computed files.
+
+* Weight: in case there is a preference in recovering certain sites of interest, their weights should be higher. The weights are always positive and are used afterwards to calculate the *Score* (see 'Interpreting cuRRBS output').
+
+The first line of the sites annotation file must be a header containing the column names. Some examples of these type of files for different biological systems can be found in the examples/ folder.
 
 
    
