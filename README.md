@@ -65,7 +65,7 @@ This file stores the information regarding the sites of interest (i.e. genomic c
 The first line of the sites annotation file must be a header containing the column names. Some examples of these type of files for different biological systems can be found in the [examples/](https://github.com/demh/cuRRBS/tree/master/examples) folder.
 
 
-## 3. Running cuRRBS
+## Running cuRRBS
 
 There are two parameters that you definitely need to consider before running cuRRBS:
 
@@ -76,7 +76,7 @@ There are two parameters that you definitely need to consider before running cuR
 You can find more information regarding cuRRBS parameters in the help page of the software:
 
 ```
-python cuRRBS.py -h
+python /path/to/cuRRBS/cuRRBS.py -h
 ``` 
 
 A tipical cuRRBS command (using the default parameters) would look like:
@@ -86,6 +86,26 @@ python /path/to/cuRRBS/cuRRBS.py -o /path/to/output/folder/ -p /path/to/hg38/pre
 ```
 
 
-## 4. Interpreting cuRRBS output  
+## Interpreting cuRRBS output  
 
-CSV file, can be opened with Excel. Following columns:
+cuRRBS output is a CSV file (final_cuRRBS_output.csv) that can be opened with Excel. It contains different customised RRBS protocols (restriction enzymes and size range) ranked by their ability to enrich for the sites of interest. The output file contains the following columns:
+
+* *Enzyme(s)*. Restriction enzymes that should be used in the customised protocol. Several methylation-insensitive isoschizomers can be reported (separated by *OR* and surrounded by parenthesis) if available, so you can choose which ones to use dependening on their experimental conditions or price. e.g. if the output is '(BmeT110I OR BsoBI) AND (BtgI)', the double-digestions BmeT110I+BtgI or BsoBI+BtgI should be used. 
+* *Experimental_size_range*. Size range that needs to be used in the experimental protocol. This is equivalent to the *theoretical_size_range* plus the size of the adapters (specified with the -s parameter).
+* *Theoretical_size_range*. Size range that is used internally by cuRRBS to make its calculations.
+* *Score*. Sum of the weights of the sites of interest that are sequenced with the customised protocol. cuRRBS attempts to maximise this variable. 
+* *%_max_Score*. Percentage of the maximum *Score* (i.e. if all the sites of interest were sequenced) achieved.
+* *NF/1000*. Number of digested fragments that will be sequenced, divided by 1000. Since we assume this variable is proportional to the sequencing costs, cuRRBS attempts to minimise it.
+* *Cost_Reduction_Factor*. Estimated fold-reduction in sequencing costs as compared to Whole Genome Bisulfite Sequencing (WGBS).
+* *Enrichment_Value*. Variable which combines the *Score* and *NF/1000* (see cuRRBS paper for more details). The final goal of cuRRBS is minimising this variable.
+* *Robustness*. It reflects how sensitive the customised protocol is to experimental errors during the size selection step. It takes values in the interval (0,1]. Generally speaking, protocols with *Robustness* > 0.95 can be considered robust (i.e. the prediction made by the software will mostly hold even if small experimental errors happen).
+* *C_Score|C_NF/1000*. Thresholds used for the *Score* and *NF* variables. 
+* *Number_of_sites*. Number of sites of interest that will be sequenced with this customised protocol.
+* *Sites_IDs* (only if the -i option is specified). IDs of the sites of interest that will be sequenced with this customised protocol.
+
+
+## Contacting us
+
+If you experience any issues with cuRRBS or have any suggestions, please contact us at dem44@ebi.ac.uk or ribeiro@ebi.ac.uk. 
+
+
