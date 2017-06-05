@@ -54,13 +54,13 @@ This file contains the isoschizomer families that should be considered by cuRRBS
 
 This file stores the information regarding the sites of interest (i.e. genomic coordinates) that you want to enrich for with the new customised protocol. This file needs to be created from scratch, since it will be different depending on the sites that need to be targeted. The file is provided with a CSV (comma-separated values) format, with each row containing the information for a site of interest and the following columns:  
 
-* Site_ID: unique ID for the current site of interest. It can not contain the '_' or the ',' characters.
+* *Site_ID*: unique ID for the current site of interest. It can not contain the '_' or the ',' characters.
 
-* Chr: chromosome where the current site of interest is located. The same chromosome names should be used as in the case of the pre-computed files.
+* *Chr*: chromosome where the current site of interest is located. The same chromosome names should be used as in the case of the pre-computed files.
 
-* Coordinate: 1-based genomic coordinate where the current site of interest is located. Please make sure that the coordinates are based on the same genome assembly as the one used to generate the pre-computed files.
+* *Coordinate*: 1-based genomic coordinate where the current site of interest is located. Please make sure that the coordinates are based on the same genome assembly as the one used to generate the pre-computed files.
 
-* Weight: in case there is a preference in recovering certain sites of interest, their weights should be higher. The weights are always positive and are used afterwards to calculate the *Score* (see **Interpreting cuRRBS output**).
+* *Weight*: in case there is a preference in recovering certain sites of interest, their weights should be higher. The weights are always positive and are used afterwards to calculate the *Score* (see **Interpreting cuRRBS output** section).
 
 The first line of the sites annotation file must be a header containing the column names. Some examples of these type of files for different biological systems can be found in the [examples/](https://github.com/demh/cuRRBS/tree/master/examples) folder.
 
@@ -69,14 +69,21 @@ The first line of the sites annotation file must be a header containing the colu
 
 There are two parameters that you definitely need to consider before running cuRRBS:
 
-* *C_Score constant* (compulsory). It provides a threshold for the minimum *Score* that needs to be obtained in order to include a certain enzyme combination in the output. This is important since there is a trade-off between the number of sites of interest that will be sequenced and the cost associated with the new protocol (i.e. higher *C_Score* values will be associated by higher sequencing costs). We recommend running the software initially with a value of 0.25, which will force the reported customised protocols to be able to capture at least 25 % of the maximum *Score* (i.e. in those case where all the sites weights are the same, this is equivalent to 25 % of the sites of interest).   
+* *C_Score constant* (compulsory). It provides a threshold for the minimum *Score* that needs to be obtained in order to include a certain enzyme combination in the output. This is important since there is a trade-off between the number of sites of interest that will be sequenced and the cost associated with the new protocol (i.e. higher *C_Score* values will be associated by higher sequencing costs). We recommend running the software initially with a value of 0.25, which will force the reported customised protocols to be able to capture at least 25 % of the maximum *Score* (i.e. in those cases where all the sites weights are the same, this is equivalent to 25 % of the sites of interest).   
 
-* *Experimental error* (default: 20 bp). 
+* *Experimental error* (default: 20 bp). You need to specify what is your estimated experimental error during the size selection step. In general, this error should be higher for protocols that use [AMPure XP beads](https://genomebiology.biomedcentral.com/articles/10.1186/gb-2012-13-10-r92) as compared to [gel-slicing](http://www.nature.com/nprot/journal/v6/n4/full/nprot.2010.190.html). If you run cuRRBS with a higher experimental error, less size ranges will be checked and the software will be faster. This parameter will also influence the *robustness* of the protocol (higher experimental errors generally imply lower *robustness*). 
 
+You can find more information regarding cuRRBS parameters in the help page of the software:
 
-Open terminal and run the following command:
+```
+python cuRRBS.py -h
+``` 
 
-More information available if running help.
+A tipical cuRRBS command (using the default parameters) would look like:
+
+```
+python /path/to/cuRRBS/cuRRBS.py -o /path/to/output/folder/ -p /path/to/hg38/pre-computed/files/folder/ -e /path/to/cuRRBS/utils/enzymes_to_check_CpG.txt -a /path/to/cuRRBS/examples/epigenetic_clock_human_hg38_sites_annotation.csv -r 75 -s 120 -c 0.25 -g 3088.286401
+```
 
 
 ## 4. Interpreting cuRRBS output  
