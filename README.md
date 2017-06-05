@@ -90,8 +90,8 @@ python /path/to/cuRRBS/cuRRBS.py -o /path/to/output/folder/ -p /path/to/hg38/pre
 
 cuRRBS output is a CSV file (final_cuRRBS_output.csv) that can be opened with Excel. It contains different customised RRBS protocols (restriction enzymes and size range) ranked by their ability to enrich for the sites of interest. The output file contains the following columns:
 
-* *Enzyme(s)*. Restriction enzymes that should be used in the customised protocol. Several methylation-insensitive isoschizomers can be reported (separated by *OR* and surrounded by parenthesis) if available, so you can choose which ones to use dependening on their experimental conditions or price. e.g. if the output is '(BmeT110I OR BsoBI) AND (BtgI)', the double-digestions BmeT110I+BtgI or BsoBI+BtgI should be used. 
-* *Experimental_size_range*. Size range that needs to be used in the experimental protocol. This is equivalent to the *theoretical_size_range* plus the size of the adapters (specified with the -s parameter).
+* *Enzyme(s)*. Restriction enzymes that should be used in the customised protocol. Several methylation-insensitive isoschizomers can be reported (separated by *OR* and surrounded by parenthesis) if available, so you can choose which ones to use dependening on their experimental conditions or price. e.g. if the output is '(BmeT110I OR BsoBI) AND (BtgI)', the double-digestions BmeT110I+BtgI or BsoBI+BtgI could be used. 
+* *Experimental_size_range*. Size range that needs to be implemented in the experimental protocol. This is equivalent to the *theoretical_size_range* plus the size of the adapters (specified with the -s parameter).
 * *Theoretical_size_range*. Size range that is used internally by cuRRBS to make its calculations.
 * *Score*. Sum of the weights of the sites of interest that are sequenced with the customised protocol. cuRRBS attempts to maximise this variable. 
 * *%_max_Score*. Percentage of the maximum *Score* (i.e. if all the sites of interest were sequenced) achieved.

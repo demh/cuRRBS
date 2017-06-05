@@ -56,6 +56,9 @@
 #    enzymes_to_pre_compute.txt: absolute path to the text file which contains 
 #                                the enzymes for which the digestions will be 
 #                                pre-computed. Each enzyme is stored in one line.
+#                                It can be obtained from an isoschizomers annotation 
+#                                file using the src/iso_annotation_2_pre_computed_enzymes.R
+#                                script.
 #                                
 #                                e.g. 
 #
