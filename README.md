@@ -6,7 +6,7 @@ Copyright (C) 2016,2017 D.E. Martin-Herranz, A.J.M. Ribeiro, T.M. Stubbs.
 
 ## What is cuRRBS?
 
-**cuRRBS** (customised Reduced Representation Bisulfite Sequencing) is an easy-to-use computational method that predicts what is the optimal combination of *restriction enzymes* and *size range* that should be used in order to enrich for any given set of sites of interest in any genome. In other words, by modifying two steps of the original protocol, cuRRBS generalises [RRBS](http://www.nature.com/nprot/journal/v6/n4/full/nprot.2010.190.html). This allows to create 'personalised' reduced representations (i.e. subsets) of the genome, that make DNA methylation next-generation sequencing experiments more cost-effective.
+**cuRRBS** (customised Reduced Representation Bisulfite Sequencing) is an easy-to-use computational method that predicts what is the optimal combination of *restriction enzymes* and *size range* that should be used in order to enrich for any given set of sites of interest in any genome. In other words, by modifying two steps of the original protocol, cuRRBS generalises [RRBS](http://www.nature.com/nprot/journal/v6/n4/full/nprot.2010.190.html). This allows the user to create 'personalised' reduced representations (i.e. subsets) of the genome, that make DNA methylation next-generation sequencing experiments more cost-effective.
 
 ## Getting started
 
@@ -69,7 +69,7 @@ The first line of the sites annotation file must be a header containing the colu
 
 There are two parameters that you definitely need to consider before running cuRRBS:
 
-* *C_Score constant* (compulsory). It provides a threshold for the minimum *Score* that needs to be obtained in order to include a certain enzyme combination in the output. This is important since there is a trade-off between the number of sites of interest that will be sequenced and the cost associated with the new protocol (i.e. higher *C_Score* values will be associated by higher sequencing costs). We recommend running the software initially with a value of 0.25, which will force the reported customised protocols to be able to capture at least 25 % of the maximum *Score* (i.e. in those cases where all the sites weights are the same, this is equivalent to 25 % of the sites of interest).   
+* *C_Score constant* (compulsory). It provides a threshold for the minimum *Score* that needs to be obtained in order to include a certain enzyme combination in the output. This is important since there is a trade-off between the number of sites of interest that will be sequenced and the cost associated with the new protocol (i.e. higher *C_Score* values will be associated with higher sequencing costs). We recommend running the software initially with a value of 0.25, which will force the reported customised protocols to be able to capture at least 25 % of the maximum *Score* (i.e. in those cases where all the site weights are the same, this is equivalent to 25 % of the sites of interest).   
 
 * *Experimental error* (default: 20 bp). You need to specify what is your estimated experimental error during the size selection step. In general, this error should be higher for protocols that use [AMPure XP beads](https://genomebiology.biomedcentral.com/articles/10.1186/gb-2012-13-10-r92) as compared to [gel-slicing](http://www.nature.com/nprot/journal/v6/n4/full/nprot.2010.190.html). If you run cuRRBS with a higher experimental error, less size ranges will be checked and the software will be faster. This parameter will also influence the *robustness* of the protocol (higher experimental errors generally imply lower *robustness*). 
 
@@ -79,7 +79,7 @@ You can find more information regarding cuRRBS parameters in the help page of th
 python /path/to/cuRRBS/cuRRBS.py -h
 ``` 
 
-A tipical cuRRBS command (using the default parameters) would look like:
+A typical cuRRBS command (using the default parameters) would look like:
 
 ```
 python /path/to/cuRRBS/cuRRBS.py -o /path/to/output/folder/ -p /path/to/hg38/pre-computed/files/folder/ -e /path/to/cuRRBS/utils/enzymes_to_check_CpG.txt -a /path/to/cuRRBS/examples/epigenetic_clock_human_hg38_sites_annotation.csv -r 75 -s 120 -c 0.25 -g 3088.286401
@@ -106,6 +106,6 @@ cuRRBS output is a CSV file (final_cuRRBS_output.csv) that can be opened with Ex
 
 ## Contacting us
 
-If you experience any issues with cuRRBS or have any suggestions, please contact us at dem44@ebi.ac.uk or ribeiro@ebi.ac.uk. 
+If you experience any issues with cuRRBS or have any suggestions, please contact us at dem44@ebi.ac.uk, ribeiro@ebi.ac.uk or thomas.stubbs@babraham.ac.uk.  
 
 
