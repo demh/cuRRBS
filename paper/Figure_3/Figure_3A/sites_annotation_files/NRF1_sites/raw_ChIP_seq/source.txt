@@ -1,0 +1,12 @@
+Download the ChIP-Seq data for NRF1 in TKO murine ES cells from the Domcle et al, Nature, 2015 paper
+These cells will presumably contain most of the in vivo NRF1 sites, since they
+are unmethylated.
+
+NRF1_CHIP_TKO_1: ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByExp/sra/SRX/SRX128/SRX1280437/SRR2500886/SRR2500886.sra
+NRF1_CHIP_TKO_2: ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByExp/sra/SRX/SRX128/SRX1280438/SRR2500887/SRR2500887.sra
+NRF1_INPUT_TKO: ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByExp/sra/SRX/SRX128/SRX1280439/SRR2500888/SRR2500888.sra
+
+Obtain FASTQ files:
+
+bsub -e error.%J -o output.%J "fastq-dump SRR2500886.sra"
+

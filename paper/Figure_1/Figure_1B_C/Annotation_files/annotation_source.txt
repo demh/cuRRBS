@@ -1,0 +1,4 @@
+## Source for the different genomic features.
+
+- CGI: http://genome.ucsc.edu/cgi-bin/hgTables?command=start; Genome: Human; Assembly: Dec. 2013 (GRCh38/hg38); track "CpG Islands". Edited with edit_CGI_annotation.sh.
+- Rest: based on annotation from ftp://ftp.sanger.ac.uk/pub/gencode/Gencode_human/release_25/gencode.v25.basic.annotation.gtf.gz

@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 744.09448819 1052.3622047"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="software_flow_chart.svg"
+   inkscape:export-filename="/Users/dem44/Documents/Manuscripts/cuRRBS/Figures/2/software_scheme.png"
+   inkscape:export-xdpi="339.39999"
+   inkscape:export-ydpi="339.39999">
+  <defs
+     id="defs4">
+    <marker
+       inkscape:isstock="true"
+       style="overflow:visible;"
+       id="marker27096"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend">
+      <path
+         transform="scale(0.8) rotate(180) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path27098" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="marker20366"
+       style="overflow:visible;"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         id="path20368"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         transform="scale(0.8) rotate(180) translate(12.5,0)" />
+    </marker>
+    <marker
+       inkscape:isstock="true"
+       style="overflow:visible;"
+       id="marker18512"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend">
+      <path
+         transform="scale(0.8) rotate(180) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path18514" />
+    </marker>
+    <marker
+       inkscape:isstock="true"
+       style="overflow:visible;"
+       id="marker16810"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend">
+      <path
+         transform="scale(0.8) rotate(180) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path16812" />
+    </marker>
+    <marker
+       inkscape:isstock="true"
+       style="overflow:visible;"
+       id="marker10060"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend">
+      <path
+         transform="scale(0.8) rotate(180) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path10062" />
+    </marker>
+    <marker
+       inkscape:isstock="true"
+       style="overflow:visible;"
+       id="marker4628"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:collect="always">
+      <path
+         transform="scale(0.8) rotate(180) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path4630" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Lend"
+       style="overflow:visible;"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         id="path4239"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         transform="scale(0.8) rotate(180) translate(12.5,0)" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.48042523"
+     inkscape:cx="513.15025"
+     inkscape:cy="519.92771"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1280"
+     inkscape:window-height="756"
+     inkscape:window-x="11"
+     inkscape:window-y="7"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g4227"
+       transform="translate(-77.095831,-18.123755)">
+      <rect
+         style="fill:none;fill-opacity:1;stroke:#001515;stroke-width:1.18118417;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="rect4170"
+         width="131.71809"
+         height="75.788353"
+         x="247.64186"
+         y="47.472271" />
+      <flowRoot
+         xml:space="preserve"
+         id="flowRoot4172"
+         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         transform="matrix(0.93903632,0,0,1,166.24186,2.5294162)"><flowRegion
+           id="flowRegion4174"><rect
+             id="rect4176"
+             width="128.04965"
+             height="70.648094"
+             x="92.725624"
+             y="50.042397"
+             style="font-size:15px" /></flowRegion><flowPara
+           id="flowPara4178"
+           style="font-size:17.5px;text-align:center;text-anchor:middle">Annotation for sites of interest</flowPara></flowRoot>    </g>
+    <g
+       id="g4220"
+       transform="translate(-90.001362,-19.595591)">
+      <rect
+         y="48.944107"
+         x="411.01556"
+         height="75.788353"
+         width="131.71809"
+         id="rect4182"
+         style="fill:none;fill-opacity:1;stroke:#001515;stroke-width:1.18118417;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    </g>
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#001515;stroke-width:2.79999995;stroke-miterlimit:4;stroke-dasharray:2.8, 2.8;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect3336"
+       width="605.66138"
+       height="97.6436"
+       x="7.81528"
+       y="18.420893" />
+    <g
+       id="g4234"
+       transform="translate(-70.077586,-16.651919)">
+      <rect
+         y="46.000435"
+         x="90.155487"
+         height="75.788353"
+         width="131.71809"
+         id="rect4140"
+         style="fill:none;fill-opacity:1;stroke:#001515;stroke-width:1.18118417;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <flowRoot
+         transform="matrix(0.93903632,0,0,1,8.0132626,-0.63858685)"
+         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         id="flowRoot4152"
+         xml:space="preserve"><flowRegion
+           id="flowRegion4154"><rect
+             style="font-size:15px"
+             y="50.042397"
+             x="92.725624"
+             height="70.648094"
+             width="128.04965"
+             id="rect4156" /></flowRegion><flowPara
+           style="font-size:17.5px;text-align:center;text-anchor:middle"
+           id="flowPara4158">Pre-computed <flowSpan
+   id="flowSpan4160"
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';text-align:center;text-anchor:middle">in silico</flowSpan> digestions</flowPara></flowRoot>    </g>
+    <flowRoot
+       transform="matrix(0.93903632,0,0,1,239.61419,-17.290506)"
+       style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="flowRoot4184"
+       xml:space="preserve"><flowRegion
+         id="flowRegion4186"><rect
+           style="font-size:15px"
+           y="50.042397"
+           x="92.725624"
+           height="70.648094"
+           width="128.04965"
+           id="rect4188" /></flowRegion><flowPara
+         style="font-size:17.5px;text-align:center;text-anchor:middle"
+         id="flowPara4190">Annotation for restriction enzymes</flowPara></flowRoot>    <g
+       id="g4206"
+       transform="translate(-129.40003,-15.180083)">
+      <rect
+         style="fill:none;fill-opacity:1;stroke:#001515;stroke-width:1.18118417;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="rect4194"
+         width="131.71809"
+         height="75.788353"
+         x="600.88232"
+         y="44.528599" />
+      <flowRoot
+         xml:space="preserve"
+         id="flowRoot4196"
+         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         transform="matrix(0.93903632,0,0,1,519.09316,-0.41425595)"><flowRegion
+           id="flowRegion4198"><rect
+             id="rect4200"
+             width="128.04965"
+             height="70.648094"
+             x="92.725624"
+             y="50.042397"
+             style="font-size:15px" /></flowRegion><flowPara
+           id="flowPara4202"
+           style="font-size:17.5px;text-align:center;text-anchor:middle">Restriction enzymes to check</flowPara></flowRoot>    </g>
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot4298"
+       style="font-style:normal;font-weight:normal;font-size:27.5px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       transform="translate(598.554,8.9033801)"><flowRegion
+         id="flowRegion4300"><rect
+           id="rect4302"
+           width="83.259575"
+           height="46.833511"
+           x="23.937128"
+           y="40.758369"
+           style="font-size:27.5px" /></flowRegion><flowPara
+         id="flowPara4304">INPUT</flowPara></flowRoot>    <g
+       id="g18473"
+       transform="translate(-116.31894,-12.807068)">
+      <rect
+         style="fill:none;fill-opacity:1;stroke:#001515;stroke-width:1.18099999;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="rect4436"
+         width="356.69485"
+         height="77.713356"
+         x="136.39674"
+         y="222.66823" />
+      <flowRoot
+         xml:space="preserve"
+         id="flowRoot4438"
+         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         transform="matrix(0.93903632,0,0,1,36.798479,176.9917)"><flowRegion
+           id="flowRegion4440"><rect
+             id="rect4442"
+             width="405.47754"
+             height="72.119926"
+             x="92.725624"
+             y="50.042397"
+             style="font-size:15px;text-align:center;text-anchor:middle" /></flowRegion><flowPara
+           id="flowPara4444"
+           style="font-size:17.5px;text-align:center;text-anchor:middle">Obtain the fragment size distribution </flowPara><flowPara
+           id="flowPara4647"
+           style="font-size:17.5px;text-align:center;text-anchor:middle">and the location of the sites of interest </flowPara><flowPara
+           id="flowPara4651"
+           style="font-size:17.5px;text-align:center;text-anchor:middle">in the digested fragments</flowPara></flowRoot>    </g>
+    <rect
+       y="196.63765"
+       x="8.9987125"
+       height="648.73944"
+       width="606.29083"
+       id="rect4454"
+       style="fill:none;fill-opacity:1;stroke:#008000;stroke-width:2.79999995;stroke-miterlimit:4;stroke-dasharray:2.8, 2.8;stroke-dashoffset:0;stroke-opacity:1" />
+    <g
+       id="g4756"
+       transform="translate(-132.43549,54.161357)">
+      <rect
+         y="335.9996"
+         x="155.45697"
+         height="77.713356"
+         width="356.69485"
+         id="rect4712"
+         style="fill:none;fill-opacity:1;stroke:#001515;stroke-width:1.18099999;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <flowRoot
+         transform="matrix(0.93903632,0,0,1,64.046499,301.26058)"
+         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         id="flowRoot4714"
+         xml:space="preserve"><flowRegion
+           id="flowRegion4716"><rect
+             style="font-size:15px;text-align:center;text-anchor:middle"
+             y="50.042397"
+             x="92.725624"
+             height="70.648094"
+             width="388.23624"
+             id="rect4718" /></flowRegion><flowPara
+           style="font-size:17.5px;text-align:center;text-anchor:middle"
+           id="flowPara4724">Calculate the <flowSpan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic'"
+   id="flowSpan19680">Score</flowSpan>, <flowSpan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic'"
+   id="flowSpan19682">NF/1000</flowSpan> and </flowPara><flowPara
+           id="flowPara4738"
+           style="font-size:17.5px;text-align:center;text-anchor:middle"><flowSpan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic'"
+   id="flowSpan19684">EV</flowSpan> variables for different size ranges</flowPara></flowRoot>    </g>
+    <g
+       id="g4764"
+       transform="translate(-132.43549,107.88343)">
+      <rect
+         style="fill:none;fill-opacity:1;stroke:#001515;stroke-width:1.18099999;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="rect4740"
+         width="356.69485"
+         height="77.713356"
+         x="155.45697"
+         y="462.57742" />
+      <flowRoot
+         xml:space="preserve"
+         id="flowRoot4742"
+         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         transform="matrix(0.93903632,0,0,1,63.906079,429.53457)"><flowRegion
+           id="flowRegion4744"><rect
+             id="rect4746"
+             width="388.23624"
+             height="70.648094"
+             x="92.725624"
+             y="50.042397"
+             style="font-size:15px;text-align:center;text-anchor:middle" /></flowRegion><flowPara
+           style="font-size:17.5px;text-align:center;text-anchor:middle"
+           id="flowPara4750">Find the <flowSpan
+   style="fill:#ff6600"
+   id="flowSpan5387">optimal size range</flowSpan> which </flowPara><flowPara
+           id="flowPara4754"
+           style="font-size:17.5px;text-align:center;text-anchor:middle">minimizes the <flowSpan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic'"
+   id="flowSpan19690">EV </flowSpan></flowPara></flowRoot>    </g>
+    <g
+       id="g4215"
+       transform="translate(-125.14995,-24.58175)">
+      <flowRoot
+         transform="translate(-48.2351,-2.0075264)"
+         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         id="flowRoot4839"
+         xml:space="preserve"><flowRegion
+           id="flowRegion4841"><rect
+             style="font-size:15px"
+             y="507.78317"
+             x="319.38824"
+             height="22.077547"
+             width="79.479088"
+             id="rect4843" /></flowRegion><flowPara
+           id="flowPara4845"
+           style="font-size:16.95000076px;fill:#0000ff">Filtering: </flowPara><flowPara
+           id="flowPara4847" /></flowRoot>      <flowRoot
+         xml:space="preserve"
+         id="flowRoot4875"
+         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         transform="translate(-47.586907,28.731424)"><flowRegion
+           id="flowRegion4877"><rect
+             id="rect4879"
+             width="292.38269"
+             height="55.224487"
+             x="319.38824"
+             y="507.78317"
+             style="font-size:15px" /></flowRegion><flowPara
+           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';fill:#8a2be2;fill-opacity:1"
+           id="flowPara4885">Score &gt; C_Score ⋅ max_Score</flowPara><flowPara
+           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';fill:#ff0000"
+           id="flowPara4209">NF/1000 ≤ C_NF/1000 ⋅ ref_NF/1000</flowPara></flowRoot>    </g>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="m 133.04935,468.1151 0,99.57796"
+       id="path4230"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4626"
+       d="m 133.04935,288.03083 0,99.57796"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker4628)" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker16810)"
+       d="m 379.07553,609.72758 48.915,0 0,-365.30139 -50.19744,-0.18398"
+       id="path16788"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot18290"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;text-align:start;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       transform="translate(-116.31894,26.611253)"><flowRegion
+         id="flowRegion18292"><rect
+           id="rect18294"
+           width="163.39693"
+           height="44.75201"
+           x="554.71692"
+           y="377.95966"
+           style="text-align:start;text-anchor:start" /></flowRegion><flowPara
+         id="flowPara18296"
+         style="font-size:15px;text-align:start;text-anchor:start">For each enzyme or enzyme combination</flowPara></flowRoot>    <flowRoot
+       transform="translate(600.07133,462.84933)"
+       style="font-style:normal;font-weight:normal;font-size:27.5px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#00ff00;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="flowRoot18482"
+       xml:space="preserve"><flowRegion
+         id="flowRegion18484"><rect
+           style="font-size:27.5px;fill:#00ff00"
+           y="40.758369"
+           x="23.937128"
+           height="34.344582"
+           width="126.56143"
+           id="rect18486" /></flowRegion><flowPara
+         id="flowPara18488"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#008000">cuRRBS</flowPara></flowRoot>    <rect
+       style="fill:none;fill-opacity:1;stroke:#001515;stroke-width:1.18099999;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect18498"
+       width="356.69485"
+       height="77.713356"
+       x="23.021486"
+       y="751.0448" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot18500"
+       style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       transform="matrix(0.93903632,0,0,1,-66.192589,707.06444)"><flowRegion
+         id="flowRegion18502"><rect
+           id="rect18504"
+           width="382.69467"
+           height="70.648094"
+           x="92.725624"
+           y="50.042397"
+           style="font-size:15px;text-align:center;text-anchor:middle" /></flowRegion><flowPara
+         id="flowPara18508"
+         style="font-size:17.5px;text-align:center;text-anchor:middle">Rank the enzymes or enzyme combinations by <flowSpan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic'"
+   id="flowSpan19692">EV</flowSpan> and </flowPara><flowPara
+         style="font-size:17.5px;text-align:center;text-anchor:middle"
+         id="flowPara19678">calculate their <flowSpan
+   style="-inkscape-font-specification:'sans-serif Italic';font-family:sans-serif;font-weight:normal;font-style:italic;font-stretch:normal;font-variant:normal"
+   id="flowSpan4416">CRF</flowSpan> and <flowSpan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic'"
+   id="flowSpan19694">robustness</flowSpan></flowPara></flowRoot>    <path
+       inkscape:connector-curvature="0"
+       id="path18510"
+       d="m 133.04935,648.63047 0,99.57796"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker18512)" />
+    <rect
+       y="925.95026"
+       x="7.81528"
+       height="97.6436"
+       width="605.66138"
+       id="rect19698"
+       style="fill:none;fill-opacity:1;stroke:#001515;stroke-width:2.79999995;stroke-miterlimit:4;stroke-dasharray:2.8, 2.8;stroke-dashoffset:0;stroke-opacity:1" />
+    <rect
+       y="937.51721"
+       x="23.660936"
+       height="74.509628"
+       width="581.08185"
+       id="rect19826"
+       style="fill:none;fill-opacity:1;stroke:#001515;stroke-width:1.18099999;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <flowRoot
+       transform="matrix(0.93903632,0,0,1,-59.296282,901.17633)"
+       style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="flowRoot19828"
+       xml:space="preserve"><flowRegion
+         id="flowRegion19830"><rect
+           style="font-size:15px"
+           y="50.042397"
+           x="92.725624"
+           height="68.566605"
+           width="609.05682"
+           id="rect19832" /></flowRegion><flowPara
+         style="font-size:17.5px;text-align:center;text-anchor:middle"
+         id="flowPara19834">CSV file containing information about the optimal enzymes and size ranges to use in the new cuRRBS protocol</flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot19992"
+       style="font-style:normal;font-weight:normal;font-size:27.5px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       transform="translate(599.70878,916.61399)"><flowRegion
+         id="flowRegion19994"><rect
+           id="rect19996"
+           width="115.52267"
+           height="34.344578"
+           x="23.937128"
+           y="40.758369"
+           style="font-size:27.5px" /></flowRegion><flowPara
+         id="flowPara19998">OUTPUT</flowPara></flowRoot>    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker20366)"
+       d="m 133.04935,116.82833 0,77.5918"
+       id="path20200"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path26930"
+       d="m 133.04935,846.91073 0,77.5918"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker27096)" />
+  </g>
+</svg>

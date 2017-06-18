@@ -1,0 +1,30 @@
+bsub -e error.%J -o output.%J "fastq-dump SRR2500888.sra"
+
+bsub -e error.%J -o output.%J "/nfs/nobackup/thornton/dem44/software/TrimGalore-0.4.4/trim_galore --stringency 5 /nfs/nobackup/thornton/dem44/methylation_clock/optimize_RRBS/Figures_paper/3X/NRF1_sites/raw_ChIP_seq/SRR2500888.fastq"
+
+bsub -e error.%J -o output.%J -M 32000 -R "rusage[mem=32000]"
+"/nfs/nobackup/thornton/dem44/software/bowtie-1.2/bowtie -v 3 -m 1 --best
+--strata -p 4 --sam
+/nfs/nobackup/thornton/dem44/software/bowtie-1.2/indexes/mouse_mm10
+/nfs/nobackup/thornton/dem44/methylation_clock/optimize_RRBS/Figures_paper/3X/NRF1_sites/trimmed_data/SRR2500888_trimmed.fq
+SRR2500888_trimmed.sam"
+
+bsub -e error.bam3 -o output.bam3 "samtools view -bS SRR2500888_trimmed.sam >
+SRR2500888_trimmed.bam"
+
+bsub -e error.bed3 -o output.bed3 "bamToBed -i SRR2500888_trimmed.bam >
+SRR2500888_trimmed.bed"
+
+bsub -e error.%J -o output.%J -M 32000 -R "rusage[mem=32000]" "python
+/nfs/nobackup/thornton/dem44/software/peakzilla/peakzilla.py
+/nfs/nobackup/thornton/dem44/methylation_clock/optimize_RRBS/Figures_paper/3X/NRF1_sites/bowtie_files/SRR2500886_trimmed.bed
+/nfs/nobackup/thornton/dem44/methylation_clock/optimize_RRBS/Figures_paper/3X/NRF1_sites/bowtie_files/SRR2500888_trimmed.bed
+> TKO1_peaks.tsv"
+
+bsub -e error.%J -o output.%J -M 32000 -R "rusage[mem=32000]" "python
+/nfs/nobackup/thornton/dem44/software/peakzilla/peakzilla.py
+/nfs/nobackup/thornton/dem44/methylation_clock/optimize_RRBS/Figures_paper/3X/NRF1_sites/bowtie_files/SRR2500887_trimmed.bed
+/nfs/nobackup/thornton/dem44/methylation_clock/optimize_RRBS/Figures_paper/3X/NRF1_sites/bowtie_files/SRR2500888_trimmed.bed
+> TKO2_peaks.tsv"
+
+intersectBed -a TKO1_peaks.tsv -b TKO2_peaks.tsv > intersect_peaks.tsv
