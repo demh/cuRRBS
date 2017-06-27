@@ -58,7 +58,7 @@ This file stores the information regarding the sites of interest (i.e. genomic c
 
 * *Site_ID*: unique ID for the current site of interest. It can not contain the '_' or the ',' characters.
 
-* *Chr*: chromosome where the current site of interest is located. The same chromosome names should be used as in the case of the pre-computed files.
+* *Chr*: chromosome where the current site of interest is located. The same chromosome names should be used as in the case of the pre-computed files. e.g. in the case of the human (hg38) and mouse (mm10) pre-computed files, we use the chromosome nomenclature from UCSC (i.e. chr1, chr2, ...).
 
 * *Coordinate*: 1-based genomic coordinate where the current site of interest is located. Please make sure that the coordinates are based on the same genome assembly as the one used to generate the pre-computed files.
 
