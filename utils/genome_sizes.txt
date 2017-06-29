@@ -2,7 +2,7 @@ Species,Assembly,Genome_size(in Mbp)
 Homo_sapiens,hg38,3088.286401
 Mus_musculus,mm10,2725.537669
 Arabidopsis_thaliana,TAIR10,119.66775
+Brassica_rapa,IVFCAASv1,256.240462
 Zea_mays,AGPv4,2107.048131
 Nicotiana_tabacum_K326,AWOJ-SS,3752.655195
-Pinus_taeda,v2.0,22104.209064
 Cannabis_sativa,canSat3,786.641772
