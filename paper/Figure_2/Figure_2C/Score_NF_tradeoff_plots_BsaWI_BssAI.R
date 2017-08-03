@@ -16,7 +16,7 @@
 ##### that shows the tradeoff between these 2 variables. Furthermore, append in an     ####
 ##### output file the Pearson correlation coefficient between these 2 variables.       ####
 ###########################################################################################
-##### USAGE: Rscript calculate_score_NF.R --help                                       ####
+##### USAGE: Rscript Score_NF_tradeoff_plots_BsaWI_BssAI.R --help                      ####
 ###########################################################################################
 
 ###########################################################
@@ -549,7 +549,7 @@ if(create_plot){
 
   print('Plotting ...');
   
-  myColors <- c('cornflowerblue', 'blue', 'darkorange');
+  myColors <- c('gray', 'blue', 'darkorange');
   names(myColors) <- c('Did not pass filtering', 'Passed filtering', 'Optimal size range');
   colScale <- scale_colour_manual(name = "Filtering",values = myColors);
   

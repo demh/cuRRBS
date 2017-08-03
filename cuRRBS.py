@@ -206,10 +206,10 @@ required.add_argument(
     "-r", metavar="Read length", 
     type=lambda x: check_range(parser, x, 30, 300),
     required=True,
-    help=("read length (in bp) that will be used during the sequencing"
-          "for the customized RRBS experiment. This determines whether"
-          "a CpG is 'seen' in a size-selected fragment after the sequencing"
-          "(i.e. only if it is close to one of the ends of the fragment)."
+    help=("read length (in bp) that will be used during the sequencing "
+          "for the customised RRBS experiment. This determines whether "
+          "a site of interest is 'seen' in a size-selected fragment after the sequencing "
+          "(i.e. only if it is close to one of the ends of the fragment). "
           "RANGE: 30-300"),
 )
 
@@ -217,7 +217,7 @@ required.add_argument(
     "-s", metavar="adapters Size", 
     type=lambda x: check_range(parser, x, 0, None ),
     required=True,
-    help=("total size (in bp) of the adapters used for the customized RRBS "
+    help=("total size (in bp) of the adapters used for the customised RRBS "
           "experiment. This will be used to calculate the experimental "
           "size range. e.g. in  the original RRBS protocol (Gu et al., "
           "Nature Methods, 2011) this value is 120 for single-end adapters"),
@@ -248,7 +248,7 @@ parser.add_argument(
     type=lambda x: check_range(parser, x, 0, 1, ttype=float),
     help="value for the C_NF/1000 constant (NF threshold). It must be a number "
          "(integer or float) in the interval (0,1]. Only those enzyme combinations "
-         "with a NF/1000 <= C_NF/1000 * ref_NF/1000 are reported, where ref_NF/1000"
+         "with a NF/1000 <= C_NF/1000 * ref_NF/1000 are reported, where ref_NF/1000 "
          "is the NF/1000 that would be generated in a whole-genome "
          "bisulfite-sequencing (WGBS) experiment. DEFAULT: 0.2"
 )
