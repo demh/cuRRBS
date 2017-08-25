@@ -22,7 +22,7 @@
 #
 # USAGE (see help page): python cuRRBS.py -h
 
-__version_info__ = ('1','02')
+__version_info__ = ('1','03')
 __version__ = '.'.join(__version_info__)
 
 try:
