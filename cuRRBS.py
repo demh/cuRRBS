@@ -265,11 +265,11 @@ parser.add_argument(
 
 parser.add_argument(
     "-b", metavar="size range Breadth",
-    default=800,
+    default=980,
     type=lambda x: check_range(parser, x, 0, None),
     help="maximum breadth (in bp) of the size ranges considered i.e. "
          "difference between the maximum and minimum fragment sizes. DEFAULT: "
-         "800"
+         "980"
 )
 
 parser.add_argument(
@@ -413,7 +413,7 @@ def find_best_ev(scores_all, fg_counts_all, no_sites, max_score):
     start = end = score = nf = robustness = 0
     for x in range(0, len(scores)-1):
         for y in range(x+1, len(scores)):
-            if y-x <= args.b:
+            if y-x <= args.b/args.d:
                 this_score = sum(scores[x:y])+scores_all[args.d*y]
                 this_nf = (sum(fg_counts[x:y])+fg_counts_all[args.d*y])
                 if this_score/max_score > args.c and (this_nf/1000.)/REF_NF_1000 <= args.k:
@@ -521,7 +521,7 @@ def main():
     enzymes_len = len(enzymes)
 
     print
-    print("Step 1/2:  Reading {} enzyme pre-digestions".format(
+    print("Step 1/2: Reading {} enzyme pre-digestions".format(
         len(enzymes)))
 
     # reading predigested files with parallelization
@@ -561,7 +561,7 @@ def main():
     random.shuffle(enzyme_mixes)
     enzyme_mixes_len = len(enzyme_mixes)
 
-    print("Step 2/2: Finding the best enzyme mix in {} possibilities".format(
+    print("Step 2/2: Finding the best enzyme combination in {} possibilities".format(
         len(enzyme_mixes)))
 
     # calculate best ev and score for all enzyme combinations
