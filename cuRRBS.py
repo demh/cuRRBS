@@ -9,20 +9,20 @@
 #
 # This file is part of cuRRBS.
 #
-# cuRRBS is free software: you can redistribute it and/or modify it under the terms 
-# of the GNU General Public License as published by the Free Software Foundation, either 
+# cuRRBS is free software: you can redistribute it and/or modify it under the terms
+# of the GNU General Public License as published by the Free Software Foundation, either
 # version 3 of the License, or (at your option) any later version.
 #
-# cuRRBS is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-# without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+# cuRRBS is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+# without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU General Public License for more details.
 #
-# You should have received a copy of the GNU General Public License along with cuRRBS. 
+# You should have received a copy of the GNU General Public License along with cuRRBS.
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # USAGE (see help page): python cuRRBS.py -h
 
-__version_info__ = ('1','03')
+__version_info__ = ('1','04')
 __version__ = '.'.join(__version_info__)
 
 try:
@@ -58,7 +58,7 @@ Created by Daniel E. Martin-Herranz, Antonio J.M. Ribeiro and Thomas M. Stubbs.
 
 Copyright (C) 2016,2017 D.E. Martin-Herranz, A.J.M. Ribeiro, T.M. Stubbs.
 
-cuRRBS comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to 
+cuRRBS comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to
 redistribute it under the conditions in the GPU GPL-3.0 license.
 
 cuRRBS v{0}
@@ -70,8 +70,8 @@ cuRRBS v{0}
 NO_RESULTS_MESSAGE = ("""
 #########################################################################################
 
-No individual enzymes or enzyme combinations were found that satisfy the used settings. 
-No output file will be created. 
+No individual enzymes or enzyme combinations were found that satisfy the used settings.
+No output file will be created.
 Please rerun the software with a lower C_Score value (or a higher C_NF/1000 value).
 
 """)
@@ -166,8 +166,8 @@ required = parser.add_argument_group("required arguments")
 parser._action_groups = [parser._action_groups[2], parser._action_groups[1]]
 
 parser.add_argument(
-    '-V', '--version', 
-    action='version', 
+    '-V', '--version',
+    action='version',
     version="{prog}s ({version})".
     format(prog="%(prog)", version=__version__)
 )
@@ -187,7 +187,7 @@ required.add_argument(
 )
 
 required.add_argument(
-    "-e", metavar="Enzymes to check", 
+    "-e", metavar="Enzymes to check",
     required=True,
     help=("path to the text file which contains the enzymes to check in the "
           "pipeline (e.g. utils/enzymes_to_check_CpG.txt)"),
@@ -203,7 +203,7 @@ required.add_argument(
 )
 
 required.add_argument(
-    "-r", metavar="Read length", 
+    "-r", metavar="Read length",
     type=lambda x: check_range(parser, x, 30, 300),
     required=True,
     help=("read length (in bp) that will be used during the sequencing "
@@ -214,7 +214,7 @@ required.add_argument(
 )
 
 required.add_argument(
-    "-s", metavar="adapters Size", 
+    "-s", metavar="adapters Size",
     type=lambda x: check_range(parser, x, 0, None ),
     required=True,
     help=("total size (in bp) of the adapters used for the customised RRBS "
@@ -224,7 +224,7 @@ required.add_argument(
 )
 
 required.add_argument(
-    "-c", metavar="C_Score constant", 
+    "-c", metavar="C_Score constant",
     type=lambda x: check_range(parser, x, 0, 1, ttype=float),
     required=True,
     help=("value for the C_Score constant (Score threshold). It must be a number "
@@ -233,7 +233,7 @@ required.add_argument(
 )
 
 required.add_argument(
-    "-g", metavar="Genome size", 
+    "-g", metavar="Genome size",
     required=True,
     type=float,
     help=("size of the genome used to generate the pre-computed files (in "
@@ -243,7 +243,7 @@ required.add_argument(
 
 
 parser.add_argument(
-    "-k", metavar="C_NF/1000 constant", 
+    "-k", metavar="C_NF/1000 constant",
     default=0.2,
     type=lambda x: check_range(parser, x, 0, 1, ttype=float),
     help="value for the C_NF/1000 constant (NF threshold). It must be a number "
@@ -254,7 +254,7 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    "-d", metavar="experimental error", 
+    "-d", metavar="experimental error",
     default=20,
     type=lambda x: check_range(parser, x, 5, 500),
     help="experimental error assumed when performing the size selection step "
@@ -264,13 +264,21 @@ parser.add_argument(
 )
 
 parser.add_argument(
+    "-b", metavar="size range Breadth",
+    default=800,
+    type=lambda x: check_range(parser, x, 0, None),
+    help="maximum breadth (in bp) of the size ranges considered i.e. "
+         "difference between the maximum and minimum fragment sizes. DEFAULT: "
+         "800"
+)
+
+parser.add_argument(
     "-t", metavar="outpuT size",
     default=30,
     type=lambda x: check_range(parser, x, 0, None ),
     help="maximum number of individual enzymes or enzyme combinations that "
          "will be reported in the final output file. DEFAULT: 30"
 )
-
 
 parser.add_argument(
     "-m", metavar="isoschizomers annotation file",
@@ -329,7 +337,7 @@ def read_sites(filename):
     next(csv_reader, None)
     return [(row[0],row[1],int(row[2]),float(row[3])) for row in csv_reader]
 
-def find_fragment(cleaving_sites, coordinate, read_length=args.r, to_print=False):    
+def find_fragment(cleaving_sites, coordinate, read_length=args.r, to_print=False):
     """Returns the length of the restriction fragment that contains this site"""
     index_coord = bisect.bisect(cleaving_sites, coordinate) - 1
     if index_coord == len(cleaving_sites):
@@ -344,7 +352,7 @@ def find_fragment(cleaving_sites, coordinate, read_length=args.r, to_print=False
         return # outside read_length
     return length
 
-def print_progress(n, total): 
+def print_progress(n, total):
     progress = float(n)/total * 100.
     time_passed = time.time() - START_TIME
     try:
@@ -358,10 +366,10 @@ def print_progress(n, total):
                      "   Time remaining:{}".format(
         progress, time_passed, remaining_str))
     sys.stdout.flush()
-        
+
 def read_precomputed(enzymes, all_data, chr_names, first=False):
     """Reads the precomputed restriction sites for a list of enzymes
-    
+
     For the first enzyme it will also read the chr names
     all_data = {'BsaWI': [arr_chr1, arr_chr2, ...], 'AsuII': ... }
     """
@@ -389,11 +397,11 @@ def get_list_of_enzymes(enzymes_list_file):
     with open(enzymes_list_file, 'rU') as enzyme_file:
         enzymes = [ line.rstrip() for line in enzyme_file if line.rstrip()]
     return enzymes
-        
+
 
 def find_best_ev(scores_all, fg_counts_all, no_sites, max_score):
     """Find best enrichment value based on array of scores and fg counts"""
-    # scores and fragment size count are binned 
+    # scores and fragment size count are binned
     # according to the experimental error
     scores = numpy.add.reduceat(
         scores_all, range(0, len(scores_all), args.d))
@@ -405,15 +413,16 @@ def find_best_ev(scores_all, fg_counts_all, no_sites, max_score):
     start = end = score = nf = robustness = 0
     for x in range(0, len(scores)-1):
         for y in range(x+1, len(scores)):
-            this_score = sum(scores[x:y])+scores_all[args.d*y]
-            this_nf = (sum(fg_counts[x:y])+fg_counts_all[args.d*y])
-            if this_score/max_score > args.c and (this_nf/1000.)/REF_NF_1000 <= args.k:
-                try:
-                    this_ev = -math.log10(this_score/this_nf*no_sites/max_score)
-                except ValueError:
-                    continue
-                if this_ev < ev:
-                    ev, start, end, score, nf = this_ev, x, y, this_score, this_nf
+            if y-x <= args.b:
+                this_score = sum(scores[x:y])+scores_all[args.d*y]
+                this_nf = (sum(fg_counts[x:y])+fg_counts_all[args.d*y])
+                if this_score/max_score > args.c and (this_nf/1000.)/REF_NF_1000 <= args.k:
+                    try:
+                        this_ev = -math.log10(this_score/this_nf*no_sites/max_score)
+                    except ValueError:
+                        continue
+                    if this_ev < ev:
+                        ev, start, end, score, nf = this_ev, x, y, this_score, this_nf
 
     # calculate robustness
     diff_sum = 0
@@ -429,11 +438,11 @@ def find_best_ev(scores_all, fg_counts_all, no_sites, max_score):
                             end+y)])*no_sites/max_score)
                 except (ValueError, IndexError):
                     error_ev = ev
-                
+
             diff_sum += abs(ev-error_ev)
         if diff_sum:
             omega = diff_sum/ev
-            robustness = math.exp(-omega) 
+            robustness = math.exp(-omega)
         else:
             robustness = "NA"
     return (start*args.d, end*args.d, ev, score, nf, robustness)
@@ -453,7 +462,7 @@ def find_best_cut(enzyme_mixes, sites, restriction_sites_dict, chr_names, enzyme
             fragment_sizes_by_chr.append(numpy.diff(chr_restriction_sites))
             for site in sites:
                 if site[1] == chromosome:
-                    #if site[0]=='S006' and chromosome=='chr10': 
+                    #if site[0]=='S006' and chromosome=='chr10':
                     #    print('oi')
                     #    fragment_size = find_fragment(chr_restriction_sites,
                     #                    site[2], to_print=True)
@@ -470,12 +479,12 @@ def find_best_cut(enzyme_mixes, sites, restriction_sites_dict, chr_names, enzyme
 
         # this function will give the best possible EV for this enzyme mix
         start, end, ev, score, nf, robustness = find_best_ev(
-            scores_count,  
-            fg_size_count, 
+            scores_count,
+            fg_size_count,
             no_sites,
-            max_score, 
+            max_score,
         )
-        sites_found = [name for sublist in sites_found[start:end+1] 
+        sites_found = [name for sublist in sites_found[start:end+1]
                        for name in sublist]
         sites_found.sort()
         enzyme_mixes_dict[enzyme_mix] = (
@@ -493,28 +502,28 @@ def main():
         os.mkdir(output_folder_name)
     except OSError:
         print("Cannot create output folder: {}".format(output_folder_name))
-    
+
     log_file_name = "{}/LOG".format(output_folder_name)
     logger = MyLogger(sys.stdout, log_file_name)
     sys.stdout = logger
 
     print(" ".join(sys.argv))
-    
+
     print(DESCRIPTION)
 
     #os.chdir(str(args.o))
     # read sites of interest file to a list of tuples
     # [ (site_name, chr_name, coord, weight), ... ]
     sites = read_sites(args.a)
-    
+
     # read enzymes to check
     enzymes = get_list_of_enzymes(args.e)
     enzymes_len = len(enzymes)
-    
+
     print
     print("Step 1/2:  Reading {} enzyme pre-digestions".format(
         len(enzymes)))
-    
+
     # reading predigested files with parallelization
     manager = multiprocessing.Manager()
     restriction_sites = manager.dict()
@@ -522,7 +531,7 @@ def main():
     jobs = []
     for i in range(NO_THREADS):
         p = multiprocessing.Process(
-            target=read_precomputed, 
+            target=read_precomputed,
             args=(enzymes[i::NO_THREADS], restriction_sites, chr_names,i==0),
         )
         jobs.append(p)
@@ -538,7 +547,7 @@ def main():
 
     for job in jobs:
         job.join()
-    
+
 
     restriction_sites_dict = dict(restriction_sites)
     ## end of reading parallelization
@@ -555,29 +564,29 @@ def main():
     print("Step 2/2: Finding the best enzyme mix in {} possibilities".format(
         len(enzyme_mixes)))
 
-    # calculate best ev and score for all enzyme combinations 
+    # calculate best ev and score for all enzyme combinations
     enzyme_mixes_dict = manager.dict()
-    
-    #find_best_cut(enzyme_mixes, sites, restriction_sites_dict,   
+
+    #find_best_cut(enzyme_mixes, sites, restriction_sites_dict,
     #                                chr_names, enzyme_mixes_dict)
 
     jobs = []
     for i in range(NO_THREADS):
         p = multiprocessing.Process(
-            target=find_best_cut, 
-            args=(enzyme_mixes[i::NO_THREADS], sites, restriction_sites_dict, 
+            target=find_best_cut,
+            args=(enzyme_mixes[i::NO_THREADS], sites, restriction_sites_dict,
                   chr_names, enzyme_mixes_dict),
         )
         jobs.append(p)
         p.start()
 
-    global START_TIME 
+    global START_TIME
     START_TIME = time.time()
     while all([job.is_alive() for job in jobs]):
         current = len(enzyme_mixes_dict.keys())
         print_progress(current, enzyme_mixes_len)
         time.sleep(1)
-    
+
     print_progress(1,1)
     print("\n")
 
@@ -601,7 +610,7 @@ def main():
         if score:
             output=("{0},{1}_{2},{3}_{4},{5},{6},{7},{8},{9:.14f},"
                   "{10:.15f},{11}|{12},{13}".format(
-                    " AND ".join(["({})".format(' OR '.join(iso_dict[enzyme])) 
+                    " AND ".join(["({})".format(' OR '.join(iso_dict[enzyme]))
                                   for enzyme in enzyme_mix]),
                     FG_MIN+start + args.s, FG_MIN+end + args.s,
                     FG_MIN+start, FG_MIN+end,
@@ -640,4 +649,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
+
