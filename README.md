@@ -10,6 +10,12 @@ Copyright (C) 2016,2017 D.E. Martin-Herranz, A.J.M. Ribeiro, T.M. Stubbs.
 
 **cuRRBS** (customised Reduced Representation Bisulfite Sequencing) is an easy-to-use computational method that predicts what is the optimal combination of *restriction enzymes* and *size range* that should be used in order to enrich for any given set of sites of interest in any genome. In other words, by modifying two steps of the original protocol, cuRRBS generalises [RRBS](http://www.nature.com/nprot/journal/v6/n4/full/nprot.2010.190.html). This allows the user to create 'personalised' reduced representations (i.e. subsets) of the genome, that make DNA methylation next-generation sequencing experiments more cost-effective.
 
+## Citing cuRRBS
+
+If you found cuRRBS useful for your research, please cite our original [publication](https://doi.org/10.1093/nar/gkx814):
+
+Daniel E. Martin-Herranz, António J. M. Ribeiro, Felix Krueger, Janet M. Thornton, Wolf Reik, Thomas M. Stubbs; cuRRBS: simple and robust evaluation of enzyme combinations for reduced representation approaches, Nucleic Acids Research, , gkx814, [https://doi.org/10.1093/nar/gkx814](https://doi.org/10.1093/nar/gkx814)
+
 ## Getting started
 
 Before being able to run cuRRBS in your computer, you will need to download and install the following software:
