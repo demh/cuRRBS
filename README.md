@@ -14,7 +14,7 @@ Copyright (C) 2016,2017 D.E. Martin-Herranz, A.J.M. Ribeiro, T.M. Stubbs.
 
 If you found cuRRBS useful for your research, please cite our original [publication](https://doi.org/10.1093/nar/gkx814):
 
-Daniel E. Martin-Herranz, António J. M. Ribeiro, Felix Krueger, Janet M. Thornton, Wolf Reik, Thomas M. Stubbs; cuRRBS: simple and robust evaluation of enzyme combinations for reduced representation approaches, Nucleic Acids Research, , gkx814, [https://doi.org/10.1093/nar/gkx814](https://doi.org/10.1093/nar/gkx814)
+> Daniel E. Martin-Herranz, António J. M. Ribeiro, Felix Krueger, Janet M. Thornton, Wolf Reik, Thomas M. Stubbs; cuRRBS: simple and robust evaluation of enzyme combinations for reduced representation approaches, *Nucleic Acids Research*, , gkx814, https://doi.org/10.1093/nar/gkx814
 
 ## Getting started
 
